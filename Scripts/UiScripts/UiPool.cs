@@ -5,7 +5,10 @@ using UnityEngine;
 public class UiPool : MonoBehaviour
 {
     public static UiPool instance = null;
+
     [SerializeField] GameObject[] UiObject;
+
+
     private Dictionary<string, GameObject> poolingObject = new Dictionary<string, GameObject>();
 
     void Awake()
@@ -28,28 +31,28 @@ public class UiPool : MonoBehaviour
 
     private void Initialize()
     {
-        poolingObject.Add("MainUi", UiObject[0]);
-        poolingObject.Add("TerritoryManagement", UiObject[1]);
-        poolingObject.Add("TerritoryManagementExitButton", UiObject[2]);
-        poolingObject.Add("BuildingGround", UiObject[3]);
-    }
-
-    void Start()
-    {
-        if(poolingObject.ContainsKey("MainUi"))
+        for(int i = 0; i < UiObject.Length; i++)
         {
-            var obj = Instantiate(poolingObject["MainUi"], GameObject.Find("Canvas").transform);
+            //인스턴스화된 객체를 넣자
+            var obj = Instantiate(UiObject[i]);
             obj.SetActive(false);
             obj.transform.SetParent(transform);
+
+            poolingObject.Add(UiObject[i].name, obj); //key는 오브젝트이름, value는 오브젝트
+            Debug.Log(obj.name);
         }
+
     }
 
-    //일단 getmain메서드만들어보자. 그리고나중에 이름바꿔서 getobject로하고 스위치함수쓰기
+
     public static GameObject GetGameObject(string UiName)
     {
         if(instance.poolingObject.ContainsKey(UiName))
         {
-            return null;
+            var obj = instance.poolingObject[UiName];
+            obj.transform.SetParent(GameObject.Find("Canvas").transform);
+            obj.SetActive(true);
+            return obj;
         }
         else
         {

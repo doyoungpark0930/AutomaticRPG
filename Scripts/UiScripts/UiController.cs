@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class UiController : MonoBehaviour
 {
-    [SerializeField] GameObject MainUi;
+    //[SerializeField] GameObject MainUi;
 
-    private void Awake()
+    private void Start()
     {
-        Instantiate(MainUi,GameObject.Find("Canvas").transform);
+        //Instantiate(MainUi,GameObject.Find("Canvas").transform);
+        UiPool.GetGameObject("MainUi");
     }
 
 

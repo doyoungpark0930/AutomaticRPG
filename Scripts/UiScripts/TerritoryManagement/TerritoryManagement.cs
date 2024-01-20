@@ -9,7 +9,7 @@ public class TerritoryManagement : MonoBehaviour
 
 
     [SerializeField] BuildingGround buildingGround; //싱글톤으로 영지 건설 지역 생성
-    private void Awake()
+    private void Start()
     {
 
         var tmp = Instantiate(territoryManagementExitButton,GameObject.Find("Canvas").transform);

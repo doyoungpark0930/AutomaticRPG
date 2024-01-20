@@ -53,7 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30636ee0876957748bc07768407d54f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TerritoryManagement: {fileID: 8759317570378645013, guid: 27ea50885bc2d7f42bc150ba0532046d, type: 3}
 --- !u!1 &5234290635397989416
 GameObject:
   m_ObjectHideFlags: 0
