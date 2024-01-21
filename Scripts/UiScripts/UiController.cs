@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiController : MonoBehaviour
 {
-    //[SerializeField] GameObject MainUi;
 
     private void Start()
     {
-        //Instantiate(MainUi,GameObject.Find("Canvas").transform);
-        UiPool.GetGameObject("MainUi");
+        var mainUi = UiPool.GetObject("MainUi");
+        mainUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
 
