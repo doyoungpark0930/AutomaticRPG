@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMove : MonoBehaviour
+public class CameraZoom : MonoBehaviour
 {
-  
     public void GetZoomOut()
     {
         StartCoroutine(ZoomOut());

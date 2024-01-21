@@ -5,11 +5,11 @@ using UnityEngine;
 public class TerritoryManagement : MonoBehaviour
 { 
     private GameObject buildingGround; //싱글톤으로 영지 건설 지역 생성
-    private CameraMove cameraMove;
+    private CameraZoom cameraZoom;
 
     private void Awake()
     {
-        cameraMove = GameObject.Find("Main Camera").GetComponent<CameraMove>();
+        cameraZoom = Camera.main.GetComponent<CameraZoom>();
     }
 
     public void initialize()
@@ -17,14 +17,14 @@ public class TerritoryManagement : MonoBehaviour
         buildingGround = UiPool.GetObject("BuildingGround");
         buildingGround.transform.SetParent(null);
 
-        cameraMove.GetZoomOut();
+        cameraZoom.GetZoomOut();
     }
 
     
 
     public void OnExitButtonClick()
     {
-        cameraMove.GetZoomIn();
+        cameraZoom.GetZoomIn();
 
         //MainUi 다시 띄우기
         var mainUi = UiPool.GetObject("MainUi");
