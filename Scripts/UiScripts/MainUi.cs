@@ -8,6 +8,7 @@ public class MainUi : MonoBehaviour
     public void OnTerritoryManagementButton()
     {
         var territoryManagement = UiPool.GetObject("TerritoryManagement");
+        territoryManagement.transform.position = Vector2.zero;
         territoryManagement.GetComponent<TerritoryManagement>().initialize();
         UiPool.ReturnObject(gameObject);
 

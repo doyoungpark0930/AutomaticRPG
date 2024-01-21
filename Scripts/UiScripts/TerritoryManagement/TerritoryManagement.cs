@@ -3,19 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TerritoryManagement : MonoBehaviour
-{
+{ 
+    private GameObject buildingGround; //싱글톤으로 영지 건설 지역 생성
+    private CameraMove cameraMove;
 
-    [SerializeField] BuildingGround buildingGround; //싱글톤으로 영지 건설 지역 생성
+    private void Awake()
+    {
+        cameraMove = GameObject.Find("Main Camera").GetComponent<CameraMove>();
+    }
 
     public void initialize()
     {
-        var territoryManagementExitButton = UiPool.GetObject("TerritoryManagementExitButton");
-        territoryManagementExitButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(999, 455);
-        territoryManagementExitButton.GetComponent<TerritoryManagementExitButton>().territoryManagement = this;
+        buildingGround = UiPool.GetObject("BuildingGround");
+        buildingGround.transform.SetParent(null);
 
-        //영지 반복문으로 한 4개정도 생성하도록 해보자
-        //buildingGround 인스턴스화 및 TerritoryExitButton에 넘기기
-        //var tmp1 = Instantiate(buildingGround);
-        //tmp.buildingGround = tmp1;
+        cameraMove.GetZoomOut();
+    }
+
+    
+
+    public void OnExitButtonClick()
+    {
+        cameraMove.GetZoomIn();
+
+        //MainUi 다시 띄우기
+        var mainUi = UiPool.GetObject("MainUi");
+        mainUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        //건물생성지역 destroy
+        UiPool.ReturnObject(buildingGround);
+        //본인 destory
+        UiPool.ReturnObject(gameObject);
     }
 }
+
+
+

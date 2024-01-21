@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BuildingGround : MonoBehaviour
 {
-    //터치하면 debug.log뜨도록
-    bool isClicking;
     float clickStartTime;
 
     void Update()
@@ -22,7 +20,6 @@ public class BuildingGround : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     // 오브젝트를 클릭했을 때 상태를 true로 설정하고 시작 시간을 저장
-                    isClicking = true;
                     clickStartTime = Time.time;
                 }
             }
@@ -39,7 +36,6 @@ public class BuildingGround : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     // 오브젝트를 클릭했을 때 상태를 true로 설정하고 시작 시간을 저장
-                    isClicking = false;
                     if(Time.time -clickStartTime <=1.0f)
                     {
                         Debug.Log("클릭 완료");
