@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class BuildingGround : MonoBehaviour
 {
-    float clickStartTime;
+
+    private Vector3 origin; //터치 시 터치 위치
 
     void Update()
+    {
+        onClick();
+
+    }
+
+    void onClick()
     {
         // 마우스 클릭 입력 감지
         if (Input.GetMouseButtonDown(0))
@@ -19,13 +26,12 @@ public class BuildingGround : MonoBehaviour
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    // 오브젝트를 클릭했을 때 상태를 true로 설정하고 시작 시간을 저장
-                    clickStartTime = Time.time;
+                    origin = Input.mousePosition;
                 }
             }
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             // Raycast를 이용하여 오브젝트를 클릭했는지 확인
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -35,12 +41,11 @@ public class BuildingGround : MonoBehaviour
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    // 오브젝트를 클릭했을 때 상태를 true로 설정하고 시작 시간을 저장
-                    if(Time.time -clickStartTime <=1.0f)
-                    {
-                        Debug.Log("클릭 완료");
-                    }
 
+                    if (origin == Input.mousePosition) //터치에서 땠을 떄 위치가 같다면
+                    {
+                        Debug.Log("클릭완료");
+                    }
                 }
             }
         }

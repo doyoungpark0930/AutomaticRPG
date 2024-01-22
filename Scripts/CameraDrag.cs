@@ -8,16 +8,21 @@ public class CameraDrag : MonoBehaviour
     private Vector3 dragOrigin; // 드래그 시작 지점
     private bool isDragging = false; // 드래그 중인지 여부
 
-    public float dragSpeed = 1.0f; // 드래그 속도
+    private float dragSpeed = 1.0f; // 드래그 속도
 
-    Vector3 difference;
+    public Vector3 minPosition; // 허용되는 최소 위치
+    public Vector3 maxPosition; // 허용되는 최대 위치
+
+    private Vector3 newPosition;
+
+    private Vector3 difference;
 
     void Update()
     {
-        HandleMouseInput();
+        Drag();
     }
 
-    void HandleMouseInput()
+    void Drag()
     {
         // 마우스 버튼이 눌렸을 때 드래그 시작
         if (Input.GetMouseButtonDown(0))
@@ -40,6 +45,14 @@ public class CameraDrag : MonoBehaviour
 
             // 드래그 방향에 따라 카메라 이동
             transform.Translate(new Vector3(difference.x, difference.y, 0) * dragSpeed * Time.deltaTime);
+
+            newPosition = transform.position;
+
+            // 위치를 제한하여 최소 및 최대 값 내에 머무르도록 함
+            newPosition.x = Mathf.Clamp(newPosition.x, minPosition.x, maxPosition.x);
+            newPosition.z = Mathf.Clamp(newPosition.z, minPosition.z, maxPosition.z);
+
+            transform.position = newPosition;
         }
     }
 }
