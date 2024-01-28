@@ -3,138 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-using System;
+
 
 
 public class DataManager : MonoBehaviour
 {
     public TextAsset CharacterDB;
-    public List<Character> allCharacterList;
+    public TextAsset WeaponDB;
+    public List<Character> allCharacterList; //캐릭터 기본 DB
+    public List<Character> MyCharacerList; //내 캐릭터 DB
+    public List<Weapon> allWeaponList; //무기 기본 DB
+    public List<Weapon> MyWeaponList; //내 무기 DB
 
 
     void Start()
     {
-        string[] line = CharacterDB.text.Substring(0, CharacterDB.text.Length - 1).Split('\n');
-        for(int i = 0; i < line.Length; i++)
-        {//AllItemList.Add(new Item(row[0], row[1], row[2], row[3], row[4] == "TRUE", row[5]));
-            string[] row = line[i].Split('\t');
+        string[] line_0 = CharacterDB.text.Substring(0, CharacterDB.text.Length - 1).Split('\n'); //CharacterDB(기본 캐릭터 정보) 줄 단위로 받아서 넣음
+        string[] line_1 = WeaponDB.text.Substring(0, WeaponDB.text.Length - 1).Split('\n'); // WeaponDB(기본 무기 정보) 줄 단위로 받아서 넣음
+        for (int i = 0; i < line_0.Length; i++)
+        {
+            string[] row = line_0[i].Split('\t'); //CharacterDB 텝 단위로 받아서 넣음
             allCharacterList.Add(new Character(row[0],row[1],row[2],row[3],row[4],row[5]));
         }
-        print(allCharacterList[1].Job);
-    }
-}
-
-// Enumerations
-public enum JobType
-{
-    Warrior, Mage, Archer
-}
-
-public enum Element
-{
-    Fire, Earth, Water, Wind
-}
-
-public enum WeaponType
-{
-    Sword, Bow, Staff
-}
-
-
-
-// Character class definition
-[System.Serializable]
-public class Character
-{
-    public string Name { get; }
-    public int Level;
-    public int Grade;
-    public JobType Job{get;}
-    public Weapon EquippedWeapon;
-    public Armor EquippedArmor;
-    public Element Element { get; }
-    public Skill Skill;
-
-    public Character(string name, string level,string grade, string job, string element, string skill)
-    {
-        Name = name;
-        Level = int.Parse(level);
-        Grade = int.Parse(grade);
-        Job = (JobType)Enum.Parse(typeof(JobType), job);
-        Element = (Element)Enum.Parse(typeof(Element), element);
-        Skill = new Skill(skill);
-    }
-}
-/*
-굳이 저렇게 하지말고, 그냥 데이터 집어넣으면 알아서 무기 찾아주도록. 저거는 그냥 보완사항일 뿐?
-null들어가면 기본무기 장착으로 해주기.
-일단 캐릭터 데이터3개와 무기 데이터 3개를 넣는다. 각각 다른 종류로. 기본 정보만
-*/
-
-// Weapon class definition
-[System.Serializable]
-public class Weapon
-{
-    public string Name;
-    public WeaponType Type;
-    public int Damage;
-
-    public Weapon(string name, WeaponType type, int damage)
-    {
-        Name = name;
-        Type = type;
-        Damage = damage;
-    }
-}
-
-// Armor class definition
-[System.Serializable]
-public class Armor
-{
-    public string Name;
-    public int Defense;
-
-    public Armor(string name, int defense)
-    {
-        Name = name;
-        Defense = defense;
-    }
-}
-
-// Skill class definition
-[System.Serializable]
-public class Skill
-{
-    public string Name;
-    public string Description;
-    public int Power;
-
-    public Skill(string name)
-    {
-        Name = name;
-    }
-}
-
-// JobUtils static class
-public static class JobUtils
-{
-    private static readonly Dictionary<JobType, WeaponType> allowedWeapons = new Dictionary<JobType, WeaponType>
-    {
-        { JobType.Warrior, WeaponType.Sword },
-        { JobType.Mage, WeaponType.Staff },
-        { JobType.Archer, WeaponType.Bow }
-    };
-
-    public static WeaponType GetAllowedWeaponType(JobType job)
-    {
-        if (allowedWeapons.TryGetValue(job, out WeaponType allowedWeapon))
+        for (int i = 0; i < line_1.Length; i++)
         {
-            return allowedWeapon;
+            string[] row = line_1[i].Split('\t'); //WeaponDB 텝 단위로 받아서 넣음
+            allWeaponList.Add(new Weapon(row[0],row[1],row[2]));
         }
 
-        // When there is no matched weapon found, instead of throwing an exception, we return a default value.
-        return default;
+        Load();
+
+        print(MyWeaponList[2].Type);
+    }
+
+    void Save()
+    {
+        AllDatabase allDatabase = new AllDatabase();
+        allDatabase.allCharacter = allCharacterList;
+        allDatabase.allWeapon = allWeaponList;
+
+        string jdata = JsonUtility.ToJson(allDatabase); //직렬화
+        File.WriteAllText(Application.dataPath + "/Resources/MyAllDatabase.txt", jdata);
+
+    }
+
+    void Load()
+    {
+
+        string jdata = File.ReadAllText(Application.dataPath + "/Resources/MyAllDatabase.txt");
+        AllDatabase allDatabase = JsonUtility.FromJson<AllDatabase>(jdata); //역직렬화
+        MyCharacerList = allDatabase.allCharacter;
+        MyWeaponList = allDatabase.allWeapon;
+
     }
 }
+
+
+
+
+
 
 

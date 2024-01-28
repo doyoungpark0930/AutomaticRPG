@@ -1,0 +1,3 @@
+검	Sword	10
+활	Bow	20
+지팡이	Staff	30
