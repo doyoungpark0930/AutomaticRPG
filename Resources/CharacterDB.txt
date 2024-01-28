@@ -1,0 +1,3 @@
+무명기사	1	1	Warrior	Fire	베기
+바이올렛	1	1	Mage	Wind	썬더볼트
+헤스티아	1	1	Archer	Water	에로우봄
