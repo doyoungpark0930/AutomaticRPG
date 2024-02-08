@@ -13,7 +13,7 @@ public class BuildingGround : MonoBehaviour
 
     }
 
-    void onClick()
+    void onClick() //마우스클릭과 클릭 땠을 때 위치 같은지 확인하는 메서드
     {
         // 마우스 클릭 입력 감지
         if (Input.GetMouseButtonDown(0))

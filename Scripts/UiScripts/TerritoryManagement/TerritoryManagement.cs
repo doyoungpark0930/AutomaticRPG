@@ -5,13 +5,14 @@ using UnityEngine;
 public class TerritoryManagement : MonoBehaviour
 { 
     private GameObject buildingGround; //싱글톤으로 영지 건설 지역 생성
-    private CameraZoom cameraZoom;
+    private CameraZoom cameraZoom; //영지관리 들어오고 나갈 때 ZoomIn,ZoomOut되기 위해서
 
     private void Awake()
     {
         cameraZoom = Camera.main.GetComponent<CameraZoom>();
     }
 
+    
     public void initialize()
     {
         buildingGround = UiPool.GetObject("BuildingGround");
@@ -19,8 +20,9 @@ public class TerritoryManagement : MonoBehaviour
 
         cameraZoom.GetZoomOut();
     }
+ 
 
-    
+
 
     public void OnExitButtonClick()
     {

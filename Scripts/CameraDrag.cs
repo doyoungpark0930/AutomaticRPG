@@ -8,7 +8,7 @@ public class CameraDrag : MonoBehaviour
     private Vector3 dragOrigin; // 드래그 시작 지점
     private bool isDragging = false; // 드래그 중인지 여부
 
-    private float dragSpeed = 1.0f; // 드래그 속도
+    private float dragSpeed = 0.8f; // 드래그 속도
 
     public Vector3 minPosition; // 허용되는 최소 위치
     public Vector3 maxPosition; // 허용되는 최대 위치
@@ -17,7 +17,7 @@ public class CameraDrag : MonoBehaviour
 
     private Vector3 difference;
 
-    void Update()
+    void LateUpdate()
     {
         Drag();
     }

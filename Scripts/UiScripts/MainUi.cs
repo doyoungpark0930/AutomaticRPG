@@ -8,8 +8,13 @@ public class MainUi : MonoBehaviour
 
     private void Awake()
     {
-        cameraDrag = Camera.main.GetComponent<CameraDrag>(); 
+        cameraDrag = Camera.main.GetComponent<CameraDrag>();
     }
+    public void initialize() //OnEnable은 오브젝트 풀에서 첫 생성시 발동 되므로 위험하니 initilize()를 사용한다
+    {
+        cameraDrag.enabled = true; //카메라 Drag On
+    }
+
     public void OnTerritoryManagementButton()
     {
         var territoryManagement = UiPool.GetObject("TerritoryManagement");
@@ -21,8 +26,10 @@ public class MainUi : MonoBehaviour
 
     public void OnKnightsButton()
     {
-        Debug.Log("click OnKnightsButton");
-        cameraDrag.enabled = !cameraDrag.enabled;
+        var knightsUi = UiPool.GetObject("KnightsUi");
+        knightsUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        knightsUi.GetComponent<KnightsUi>().initialize();
+        UiPool.ReturnObject(gameObject);
     }
 
     public void OnAdvantureButton()

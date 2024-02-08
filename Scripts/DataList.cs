@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using UnityEngine.UI;
 using System;
 
 public class AllDatabase   //json직렬화를 위해 클래스 따로 형성
@@ -26,30 +24,36 @@ public enum WeaponType
 {
     Sword, Bow, Staff
 }
-
+ //public class gold..
 
 
 // Character class definition
 [System.Serializable]
 public class Character
 {
-    public string Name { get; }
+    [SerializeField]  //private로 선언된 변수가 직렬화 되도록 하기 위함
+    private string name;
+    public string Name { get { return name; } }
     public int Level;
     public int Grade;
-    public JobType Job { get; }
+    [SerializeField]
+    private JobType job;
+    public JobType Job { get { return job; } }
     public Weapon EquippedWeapon;
     public Armor EquippedArmor;
-    public Element Element { get; }
+    [SerializeField]
+    private Element element;
+    public Element Element { get { return element; } }
     public Skill Skill;
 
     public Character(string name, string level, string grade, string job, string element, string skill)
     {
-        Name = name;
-        Level = int.Parse(level);
-        Grade = int.Parse(grade);
-        Job = (JobType)Enum.Parse(typeof(JobType), job);
-        Element = (Element)Enum.Parse(typeof(Element), element);
-        Skill = new Skill(skill);
+        this.name = name;
+        this.Level = int.Parse(level);
+        this.Grade = int.Parse(grade);
+        this.job = (JobType)Enum.Parse(typeof(JobType), job);
+        this.element = (Element)Enum.Parse(typeof(Element), element);
+        this.Skill = new Skill(skill);
     }
 }
 
@@ -59,14 +63,16 @@ public class Character
 public class Weapon
 {
     public string Name;
-    public WeaponType Type { get; }
+    [SerializeField]
+    private WeaponType type;
+    public WeaponType Type { get { return type; } }
     public int Damage;
 
     public Weapon(string name, string weapontype, string damage)
     {
-        Name = name;
-        Type = (WeaponType)Enum.Parse(typeof(WeaponType), weapontype);
-        Damage = int.Parse(damage);
+        this.Name = name;
+        this.type = (WeaponType)Enum.Parse(typeof(WeaponType), weapontype);
+        this.Damage = int.Parse(damage);
     }
 }
 
@@ -79,8 +85,8 @@ public class Armor
 
     public Armor(string name, int defense)
     {
-        Name = name;
-        Defense = defense;
+        this.Name = name;
+        this.Defense = defense;
     }
 }
 
@@ -94,7 +100,7 @@ public class Skill
 
     public Skill(string name)
     {
-        Name = name;
+        this.Name = name;
     }
 }
 
