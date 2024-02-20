@@ -602,7 +602,7 @@ GameObject:
   - component: {fileID: 6416491252657452190}
   - component: {fileID: 958571411363770764}
   m_Layer: 5
-  m_Name: Job
+  m_Name: Element
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2474,7 +2474,7 @@ GameObject:
   - component: {fileID: 2349493918229986146}
   - component: {fileID: 8337905090928992211}
   m_Layer: 5
-  m_Name: Element
+  m_Name: Job
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5368,8 +5368,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6150019138587452158}
   m_HandleRect: {fileID: 6150019138587452159}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5392,7 +5392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6150019139190061954
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5415,10 +5415,10 @@ RectTransform:
   m_Father: {fileID: 6150019139290173738}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 240, y: -250}
-  m_SizeDelta: {x: 250, y: 400}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6150019139190061952
 CanvasRenderer:

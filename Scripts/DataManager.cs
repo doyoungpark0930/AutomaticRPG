@@ -17,6 +17,8 @@ public class DataManager : MonoBehaviour
     public List<Weapon> allWeaponList; //무기 기본 DB
     public static List<Weapon> MyWeaponList; //내 무기 DB
 
+    public Sprite[] WeaponSprite;
+
 
     void Awake()
     {
@@ -35,7 +37,10 @@ public class DataManager : MonoBehaviour
 
         Initialize();
     }
-
+    void Start()
+    {
+        
+    }
     void Initialize()
     {
         string[] line_0 = CharacterDB.text.Substring(0, CharacterDB.text.Length - 1).Split('\n'); //CharacterDB(기본 캐릭터 정보) 줄 단위로 받아서 넣음
@@ -50,7 +55,7 @@ public class DataManager : MonoBehaviour
             string[] row = line_1[i].Split('\t'); //WeaponDB 텝 단위로 받아서 넣음
             allWeaponList.Add(new Weapon(row[0], row[1], row[2]));
         }
-        Save();
+        //Save();
         Load();
     }
 
@@ -58,8 +63,10 @@ public class DataManager : MonoBehaviour
     void Save()
     {
         AllDatabase allDatabase = new AllDatabase();
-        allDatabase.allCharacter = allCharacterList;
-        allDatabase.allWeapon = allWeaponList;
+        //allDatabase.allCharacter = allCharacterList;
+        allDatabase.allCharacter = MyCharacterList;
+        //allDatabase.allWeapon = allWeaponList;
+        allDatabase.allWeapon = MyWeaponList;
 
         string jdata = JsonUtility.ToJson(allDatabase); //직렬화
         File.WriteAllText(Application.dataPath + "/Resources/MyAllDatabase.txt", jdata);

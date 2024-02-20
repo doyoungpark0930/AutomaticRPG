@@ -617,9 +617,11 @@ MonoBehaviour:
   CharacterDB: {fileID: 4900000, guid: 6941047c58f78704bb827d8b07e96f97, type: 3}
   WeaponDB: {fileID: 4900000, guid: 4fa61104cea33624eb59a114f0ce6a5f, type: 3}
   allCharacterList: []
-  MyCharacerList: []
   allWeaponList: []
-  MyWeaponList: []
+  WeaponSprite:
+  - {fileID: 21300000, guid: 354e09d60d0334d4bbc41c001926fd73, type: 3}
+  - {fileID: 21300000, guid: 1cc901af29d0f3042b49d75c8a2bdcf2, type: 3}
+  - {fileID: 21300000, guid: d3048913d87bfd14b98ef7c03de208ad, type: 3}
 --- !u!1 &1748725541
 GameObject:
   m_ObjectHideFlags: 0
