@@ -34,7 +34,39 @@ public class KnightsUi : MonoBehaviour
             Slot[i].SetActive(true);
             Slot[i].transform.GetChild(0).GetComponent<Text>().text = DataManager.instance.MyCharacterList[i].Name;
             Slot[i].transform.GetChild(2).GetComponent<Text>().text = DataManager.instance.MyCharacterList[i].Level.ToString();
-           Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = DataManager.instance.JobSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].Job.ToString());
+            Slot[i].transform.GetChild(3).GetComponent<Image>().sprite =
+                DataManager.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].Element.ToString());
+            Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = 
+                DataManager.instance.JobSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].Job.ToString());
+
+            if(DataManager.instance.MyCharacterList[i].EquippedWeapon.Name != "") //MyCharacterList[i]에 무기가 배정됐다면
+            {
+                Slot[i].transform.GetChild(5).GetComponent<Image>().sprite =
+                    DataManager.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].EquippedWeapon.Name);
+            }
+            else //무기가 배정되지 않았다면, 알파값을 0f로 조정하여 투명하게 만든다
+            {
+                Image weaponImage = Slot[i].transform.GetChild(5).GetComponent<Image>();
+
+                Color color = weaponImage.color;
+                color.a = 0f;
+                weaponImage.color = color;
+
+            }
+
+            if (DataManager.instance.MyCharacterList[i].EquippedArmor.Name != "") //MyCharacterList[i]에 방어구가 배정됐다면
+            {
+                Slot[i].transform.GetChild(6).GetComponent<Image>().sprite =
+                    DataManager.instance.ArmorSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].EquippedArmor.Name);
+            }
+            else //방어구가 배정되지 않았다면, 알파값을 0f로 조정하여 투명하게 만든다
+            {
+                Image armorImage = Slot[i].transform.GetChild(6).GetComponent<Image>();
+
+                Color color = armorImage.color;
+                color.a = 0f;
+                armorImage.color = color;
+            }
 
 
         }

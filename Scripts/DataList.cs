@@ -55,6 +55,7 @@ public class Character
         this.job = (JobType)Enum.Parse(typeof(JobType), job);
         this.element = (Element)Enum.Parse(typeof(Element), element);
         this.Skill = new Skill(skill);
+
     }
 }
 

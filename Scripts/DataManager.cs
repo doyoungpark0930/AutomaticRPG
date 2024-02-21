@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-
+using System;
 
 
 public class DataManager : MonoBehaviour
@@ -26,6 +26,7 @@ public class DataManager : MonoBehaviour
 
 
     public Sprite[] JobSprite;
+    public Sprite[] WeaponSprite;
     public Sprite[] ArmorSprite;
     public Sprite[] ElementSprite;
 
@@ -46,10 +47,7 @@ public class DataManager : MonoBehaviour
 
         Initialize();
     }
-    void Start()
-    {
-        
-    }
+
     void Initialize()
     {
         string[] line_0 = CharacterDB.text.Substring(0, CharacterDB.text.Length - 1).Split('\n'); //CharacterDB(기본 캐릭터 정보) 줄 단위로 받아서 넣음
@@ -75,17 +73,23 @@ public class DataManager : MonoBehaviour
         //Save();
         Load();
         //Save();
+
+        LoadSprites(); //메모리 효율성을 위해, My..List의 리소스들만 메모리에 올리고 필요한 스프라이트는 필요할 때 따로 올린다.
     }
 
-   
+
     void Save()
     {
         AllDatabase allDatabase = new AllDatabase();
 
-       /* MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
+        /*MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[0].EquippedArmor = MyArmorList[0];
         MyCharacterList[2].EquippedWeapon = MyWeaponList[4];
-        MyCharacterList[1].EquippedArmor = MyArmorList[1];*/
+        MyCharacterList[1].EquippedArmor = MyArmorList[1];
+
+        MyCharacterList[0].Level = 26;
+        MyCharacterList[1].Level = 30;
+        MyCharacterList[2].Level = 4;*/
 
         //allDatabase.allCharacter = allCharacterList;
         allDatabase.allCharacter = MyCharacterList;
@@ -108,6 +112,37 @@ public class DataManager : MonoBehaviour
         MyWeaponList = allDatabase.allWeapon;
         MyArmorList = allDatabase.allArmor;
 
+    }
+
+    void LoadSprites()
+    {
+        // 무기 스프라이트 로드
+        WeaponSprite = new Sprite[MyWeaponList.Count];
+        for (int i = 0; i < MyWeaponList.Count; i++)
+        {
+            WeaponSprite[i] = Resources.Load<Sprite>("Weapon/" + MyWeaponList[i].Name);
+        }
+
+        // 방어구 스프라이트 로드
+        ArmorSprite = new Sprite[MyArmorList.Count];
+        for (int i = 0; i < MyArmorList.Count; i++)
+        {
+            ArmorSprite[i] = Resources.Load<Sprite>("Armor/" + allArmorList[i].Name);
+        }
+
+        // 직업 스프라이트 로드 (JobSprite 배열의 크기는 JobType enum의 크기와 같아야 한다)
+        JobSprite = new Sprite[Enum.GetNames(typeof(JobType)).Length];
+        for (int i = 0; i < JobSprite.Length; i++)
+        {
+            JobSprite[i] = Resources.Load<Sprite>("Job/" + ((JobType)i).ToString());
+        }
+
+        // 속성 스프라이트 로드 (ElementSprite 배열의 크기는 Element enum의 크기와 같아야 한다)
+        ElementSprite = new Sprite[Enum.GetNames(typeof(Element)).Length];
+        for (int i = 0; i < ElementSprite.Length; i++)
+        {
+            ElementSprite[i] = Resources.Load<Sprite>("Element/" + ((Element)i).ToString());
+        }
     }
 }
 

@@ -623,17 +623,10 @@ MonoBehaviour:
   MyWeaponList: []
   allArmorList: []
   MyArmorList: []
-  JobSprite:
-  - {fileID: 21300000, guid: 354e09d60d0334d4bbc41c001926fd73, type: 3}
-  - {fileID: 21300000, guid: 1cc901af29d0f3042b49d75c8a2bdcf2, type: 3}
-  - {fileID: 21300000, guid: d3048913d87bfd14b98ef7c03de208ad, type: 3}
-  ArmorSprite:
-  - {fileID: 21300000, guid: 5b0d68097293df44ca4bbaf529a9b3d9, type: 3}
-  - {fileID: 21300000, guid: 62b63a26c15189445b056ec17f20949b, type: 3}
-  ElementSprite:
-  - {fileID: 21300000, guid: eb5c75f481710394f918757ee27ecda5, type: 3}
-  - {fileID: 21300000, guid: 8082e33f5971e2849bab9933b620b056, type: 3}
-  - {fileID: 21300000, guid: b6698e4e29e3b024e8663e236fb933ca, type: 3}
+  JobSprite: []
+  WeaponSprite: []
+  ArmorSprite: []
+  ElementSprite: []
 --- !u!1 &1748725541
 GameObject:
   m_ObjectHideFlags: 0
