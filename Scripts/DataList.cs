@@ -7,6 +7,7 @@ public class AllDatabase   //json직렬화를 위해 클래스 따로 형성
 {
     public List<Character> allCharacter;
     public List<Weapon> allWeapon;
+    public List<Armor> allArmor;
 }
 
 // Enumerations
@@ -83,10 +84,10 @@ public class Armor
     public string Name;
     public int Defense;
 
-    public Armor(string name, int defense)
+    public Armor(string name, string defense)
     {
         this.Name = name;
-        this.Defense = defense;
+        this.Defense = int.Parse(defense);
     }
 }
 
@@ -101,27 +102,5 @@ public class Skill
     public Skill(string name)
     {
         this.Name = name;
-    }
-}
-
-// JobUtils static class
-public static class JobUtils
-{
-    private static readonly Dictionary<JobType, WeaponType> allowedWeapons = new Dictionary<JobType, WeaponType>
-    {
-        { JobType.Warrior, WeaponType.Sword },
-        { JobType.Mage, WeaponType.Staff },
-        { JobType.Archer, WeaponType.Bow }
-    };
-
-    public static WeaponType GetAllowedWeaponType(JobType job)
-    {
-        if (allowedWeapons.TryGetValue(job, out WeaponType allowedWeapon))
-        {
-            return allowedWeapon;
-        }
-
-        // When there is no matched weapon found, instead of throwing an exception, we return a default value.
-        return default;
     }
 }

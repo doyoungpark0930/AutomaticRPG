@@ -1,3 +1,6 @@
-검	Sword	10
-활	Bow	20
-지팡이	Staff	30
+sword	Sword	10
+axe	Sword	30
+Bow1	Bow	20
+Bow2	Bow	35
+Staff1	Staff	30
+Staff2	Staff	45

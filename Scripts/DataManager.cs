@@ -12,13 +12,22 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] TextAsset CharacterDB;
     [SerializeField] TextAsset WeaponDB;
+    [SerializeField] TextAsset ArmorDB;
+
     public List<Character> allCharacterList; //캐릭터 기본 DB
-    public static List<Character> MyCharacterList; //내 캐릭터 DB
+    public List<Character> MyCharacterList; //내 캐릭터 DB
+
     public List<Weapon> allWeaponList; //무기 기본 DB
-    public static List<Weapon> MyWeaponList; //내 무기 DB
+    public List<Weapon> MyWeaponList; //내 무기 DB
 
-    public Sprite[] WeaponSprite;
+    public List<Armor> allArmorList; //방어구 기본 DB
+    public List<Armor> MyArmorList; //내 방어구 DB
 
+
+
+    public Sprite[] JobSprite;
+    public Sprite[] ArmorSprite;
+    public Sprite[] ElementSprite;
 
     void Awake()
     {
@@ -45,6 +54,7 @@ public class DataManager : MonoBehaviour
     {
         string[] line_0 = CharacterDB.text.Substring(0, CharacterDB.text.Length - 1).Split('\n'); //CharacterDB(기본 캐릭터 정보) 줄 단위로 받아서 넣음
         string[] line_1 = WeaponDB.text.Substring(0, WeaponDB.text.Length - 1).Split('\n'); // WeaponDB(기본 무기 정보) 줄 단위로 받아서 넣음
+        string[] line_2 = ArmorDB.text.Substring(0, ArmorDB.text.Length - 1).Split('\n'); // ArmorDB(기본 방어구 정보) 줄 단위로 받아서 넣음
         for (int i = 0; i < line_0.Length; i++)
         {
             string[] row = line_0[i].Split('\t'); //CharacterDB 텝 단위로 받아서 넣음
@@ -55,18 +65,34 @@ public class DataManager : MonoBehaviour
             string[] row = line_1[i].Split('\t'); //WeaponDB 텝 단위로 받아서 넣음
             allWeaponList.Add(new Weapon(row[0], row[1], row[2]));
         }
+        for (int i = 0; i < line_2.Length; i++)
+        {
+            string[] row = line_2[i].Split('\t'); //ArmorDB 텝 단위로 받아서 넣음
+            allArmorList.Add(new Armor(row[0], row[1]));
+
+        }
+
         //Save();
         Load();
+        //Save();
     }
 
    
     void Save()
     {
         AllDatabase allDatabase = new AllDatabase();
+
+       /* MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
+        MyCharacterList[0].EquippedArmor = MyArmorList[0];
+        MyCharacterList[2].EquippedWeapon = MyWeaponList[4];
+        MyCharacterList[1].EquippedArmor = MyArmorList[1];*/
+
         //allDatabase.allCharacter = allCharacterList;
         allDatabase.allCharacter = MyCharacterList;
         //allDatabase.allWeapon = allWeaponList;
         allDatabase.allWeapon = MyWeaponList;
+        //allDatabase.allArmor = allArmorList;
+        allDatabase.allArmor = MyArmorList;
 
         string jdata = JsonUtility.ToJson(allDatabase); //직렬화
         File.WriteAllText(Application.dataPath + "/Resources/MyAllDatabase.txt", jdata);
@@ -80,6 +106,7 @@ public class DataManager : MonoBehaviour
         AllDatabase allDatabase = JsonUtility.FromJson<AllDatabase>(jdata); //역직렬화
         MyCharacterList = allDatabase.allCharacter;
         MyWeaponList = allDatabase.allWeapon;
+        MyArmorList = allDatabase.allArmor;
 
     }
 }

@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using System.Linq;
 public class KnightsUi : MonoBehaviour
 {
     CameraDrag cameraDrag;
     [SerializeField] GameObject[] Slot; //이거 자동화해야할듯.. 일단 mvc로 한다
-    [SerializeField] DataManager dataManager; //이거 문제
     void Awake()
     {
         cameraDrag = Camera.main.GetComponent<CameraDrag>();
-        dataManager = GameObject.Find("DataManager").GetComponent<DataManager>(); //이렇게 oop개념 말아먹게 코딩하지않기
     }
     void Start()
     {
@@ -31,16 +29,14 @@ public class KnightsUi : MonoBehaviour
     private void ShowCharacterSlot() 
     {
         //일단 MyCharacterList만큼 slot생성하는걸로하자
-        for(int i = 0; i < DataManager.MyCharacterList.Count; i++)
+        for(int i = 0; i < DataManager.instance.MyCharacterList.Count; i++)
         {
             Slot[i].SetActive(true);
-            Slot[i].transform.GetChild(0).GetComponent<Text>().text = DataManager.MyCharacterList[i].Name;
-            Slot[i].transform.GetChild(2).GetComponent<Text>().text = DataManager.MyCharacterList[i].Level.ToString();
+            Slot[i].transform.GetChild(0).GetComponent<Text>().text = DataManager.instance.MyCharacterList[i].Name;
+            Slot[i].transform.GetChild(2).GetComponent<Text>().text = DataManager.instance.MyCharacterList[i].Level.ToString();
+           Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = DataManager.instance.JobSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].Job.ToString());
 
-            Slot[i].transform.GetChild(4).GetComponent<Image>().sprite =
-                Array.Find<Sprite>(dataManager.WeaponSprite, sprite => sprite.name == DataManager.MyCharacterList[i].Job.ToString());
 
-            
         }
 
     }
