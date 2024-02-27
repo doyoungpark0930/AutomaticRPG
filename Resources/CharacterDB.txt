@@ -1,3 +1,10 @@
 무명기사	1	1	Warrior	Fire	베기
 바이올렛	1	1	Mage	Wind	썬더볼트
 헤스티아	1	1	Archer	Water	에로우봄
+헬리오	1	1	Warrior	Fire	베기2
+케루스	1	1	Mage	Wind	힐
+델핀	1	1	Archer	Earth	에로우봄2
+오멘	1	1	Warrior	Fire	스트라이크
+유이스	1	1	Mage	Water	파도
+펠슨	1	1	Archer	Earth	에로우봄3
+잭슨	1	1	Warrior	Earth	스트라이크2
