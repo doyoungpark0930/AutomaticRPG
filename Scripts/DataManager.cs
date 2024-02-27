@@ -5,6 +5,10 @@ using System.IO;
 using UnityEngine.UI;
 using System;
 
+public interface ICharacterListObserver
+{
+    void OnCharacterListUpdated();
+}
 
 public class DataManager : MonoBehaviour
 {
@@ -30,6 +34,31 @@ public class DataManager : MonoBehaviour
     public Sprite[] ArmorSprite;
     public Sprite[] ElementSprite;
 
+    private List<ICharacterListObserver> observers = new List<ICharacterListObserver>();
+    public void RegisterObserver(ICharacterListObserver observer)
+    {
+        if (!observers.Contains(observer))
+        {
+            observers.Add(observer);
+        }
+    }
+
+    public void UnregisterObserver(ICharacterListObserver observer)
+    {
+        if (observers.Contains(observer))
+        {
+            observers.Remove(observer);
+        }
+    }
+
+    public void NotifyObservers()
+    {
+        foreach (var observer in observers)
+        {
+            observer.OnCharacterListUpdated();
+        }
+    }
+
     void Awake()
     {
         if (instance == null)
@@ -53,7 +82,7 @@ public class DataManager : MonoBehaviour
         string[] line_0 = CharacterDB.text.Substring(0, CharacterDB.text.Length - 1).Split('\n'); //CharacterDB(기본 캐릭터 정보) 줄 단위로 받아서 넣음
         string[] line_1 = WeaponDB.text.Substring(0, WeaponDB.text.Length - 1).Split('\n'); // WeaponDB(기본 무기 정보) 줄 단위로 받아서 넣음
         string[] line_2 = ArmorDB.text.Substring(0, ArmorDB.text.Length - 1).Split('\n'); // ArmorDB(기본 방어구 정보) 줄 단위로 받아서 넣음
-        for (int i = 0; i < line_0.Length; i++)
+        for (int i = 0; i < line_0.Length; i++) 
         {
             string[] row = line_0[i].Split('\t'); //CharacterDB 텝 단위로 받아서 넣음
             allCharacterList.Add(new Character(row[0], row[1], row[2], row[3], row[4], row[5]));
@@ -84,7 +113,7 @@ public class DataManager : MonoBehaviour
 
         /*MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[0].EquippedArmor = MyArmorList[0];
-        MyCharacterList[2].EquippedWeapon = MyWeaponList[4];
+        MyCharacterList[2].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[1].EquippedArmor = MyArmorList[1];
 
         MyCharacterList[0].Level = 26;

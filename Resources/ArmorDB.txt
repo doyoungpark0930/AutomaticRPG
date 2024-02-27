@@ -1,8 +1,8 @@
-gear	10
-shield	20
-gear2	10
-shield2	15
-gear3	30
-shiled3	40
-gear4	50
-shiled4	60
+Gear	10
+Shield	20
+Gear2	10
+Shield2	15
+Gear3	30
+Shield3	40
+Gear4	50
+Shield4	60

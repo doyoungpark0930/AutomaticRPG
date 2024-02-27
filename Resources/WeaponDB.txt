@@ -1,9 +1,9 @@
-sword	Sword	10
+Sword	Sword	10
 Bow1	Bow	20
 Staff1	Staff	30
-axe	Sword	20
+Axe	Sword	20
 Bow2	Bow	30
 Staff2	Staff	45
-sword2	Sword	50
+Sword2	Sword	50
 Bow3	Bow	65
 Staff3	Staff	70

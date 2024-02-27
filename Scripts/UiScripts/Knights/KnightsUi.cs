@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-public class KnightsUi : MonoBehaviour
+public class KnightsUi : MonoBehaviour, ICharacterListObserver
 {
     CameraDrag cameraDrag;
     [SerializeField] GameObject[] Slot; //이거 자동화해야할듯.. 일단 mvc로 한다
+
+    public void OnCharacterListUpdated()
+    {
+        // MyCharacterList의 변경 사항을 기반으로 UI 업데이트
+        ShowCharacterSlot();
+    }
 
     void Awake()
     {
