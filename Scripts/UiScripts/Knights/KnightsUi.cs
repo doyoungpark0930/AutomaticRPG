@@ -20,14 +20,14 @@ public class KnightsUi : MonoBehaviour, ICharacterListObserver
     }
     void Start()
     {
-        //Slot이미지를 첫 실행시에 다 받는다. 사용자 데이터(My..List)가 바뀐다면 그 데이터만 따로 Slot에 변화를 주는 메서드를 이용한다.
+        //KnightsUI스크립트를 옵저버에 등록한다
+        DataManager.instance.RegisterObserver(this);
+        //Slot이미지를 첫 실행시에 다 받는다. 
         ShowCharacterSlot();
     }
-    public void initialize()
+    public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
-
-
     }
    
 

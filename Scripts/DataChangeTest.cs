@@ -8,5 +8,6 @@ public class DataChangeTest : MonoBehaviour
     public void OnClickButton()
     {
         DataManager.instance.MyCharacterList[1].Level++;
+        DataManager.instance.NotifyObservers();
     }
 }
