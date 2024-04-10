@@ -5,10 +5,6 @@ using System.IO;
 using UnityEngine.UI;
 using System;
 
-public interface ICharacterListObserver
-{
-    void OnCharacterListUpdated();
-}
 
 public class DataManager : MonoBehaviour
 {
@@ -34,30 +30,6 @@ public class DataManager : MonoBehaviour
     public Sprite[] ArmorSprite;
     public Sprite[] ElementSprite;
 
-    private List<ICharacterListObserver> observers = new List<ICharacterListObserver>();
-    public void RegisterObserver(ICharacterListObserver observer)
-    {
-        if (!observers.Contains(observer))
-        {
-            observers.Add(observer);
-        }
-    }
-
-    public void UnregisterObserver(ICharacterListObserver observer)
-    {
-        if (observers.Contains(observer))
-        {
-            observers.Remove(observer);
-        }
-    }
-
-    public void NotifyObservers()
-    {
-        foreach (var observer in observers)
-        {
-            observer.OnCharacterListUpdated();
-        }
-    }
 
     void Awake()
     {

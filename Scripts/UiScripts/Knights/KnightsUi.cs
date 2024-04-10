@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-public class KnightsUi : MonoBehaviour, ICharacterListObserver
+public class KnightsUi : MonoBehaviour
 {
     CameraDrag cameraDrag;
     [SerializeField] GameObject[] Slot; //이거 자동화해야할듯.. 일단 mvc로 한다
@@ -20,14 +20,14 @@ public class KnightsUi : MonoBehaviour, ICharacterListObserver
     }
     void Start()
     {
-        //KnightsUI스크립트를 옵저버에 등록한다
-        DataManager.instance.RegisterObserver(this);
         //Slot이미지를 첫 실행시에 다 받는다. 
         ShowCharacterSlot();
     }
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
+
+        ShowCharacterSlot();
     }
    
 
