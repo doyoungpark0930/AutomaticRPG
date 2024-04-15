@@ -26,9 +26,9 @@ public class MainUi : MonoBehaviour
 
     public void OnKnightsButton()
     {
-        var knightsUi = UiPool.GetObject("KnightsUi");
-        knightsUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        knightsUi.GetComponent<KnightsUi>().initialize();
+        var knightsView = UiPool.GetObject("KnightsView");
+        knightsView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        knightsView.GetComponent<KnightsView>().initialize();
         UiPool.ReturnObject(gameObject);
     }
 

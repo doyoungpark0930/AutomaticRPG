@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using System;
 
 
-public class DataManager : MonoBehaviour
+public class DataModel : MonoBehaviour
 {
-    public static DataManager instance = null;
+    public static DataModel instance = null;
 
     [SerializeField] TextAsset CharacterDB;
     [SerializeField] TextAsset WeaponDB;

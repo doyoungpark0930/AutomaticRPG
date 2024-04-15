@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-public class KnightsUi : MonoBehaviour
+public class KnightsView : MonoBehaviour
 {
     CameraDrag cameraDrag;
     [SerializeField] GameObject[] Slot; //이거 자동화해야할듯.. 일단 mvc로 한다
-
-    public void OnCharacterListUpdated()
-    {
-        // MyCharacterList의 변경 사항을 기반으로 UI 업데이트
-        ShowCharacterSlot();
-    }
 
     void Awake()
     {
@@ -38,21 +32,21 @@ public class KnightsUi : MonoBehaviour
     private void ShowCharacterSlot() //Slot에 이미지들을 넣는다
     {
         //일단 MyCharacterList만큼 slot생성하는걸로하자
-        for(int i = 0; i < DataManager.instance.MyCharacterList.Count; i++)
+        for(int i = 0; i < DataModel.instance.MyCharacterList.Count; i++)
         {
             Slot[i].SetActive(true);
-            Slot[i].transform.GetChild(0).GetComponent<Text>().text = DataManager.instance.MyCharacterList[i].Name;
-            Slot[i].transform.GetChild(2).GetComponent<Text>().text = DataManager.instance.MyCharacterList[i].Level.ToString();
+            Slot[i].transform.GetChild(0).GetComponent<Text>().text = DataModel.instance.MyCharacterList[i].Name;
+            Slot[i].transform.GetChild(2).GetComponent<Text>().text = DataModel.instance.MyCharacterList[i].Level.ToString();
             Slot[i].transform.GetChild(3).GetComponent<Image>().sprite =
-                DataManager.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].Element.ToString());
+                DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == DataModel.instance.MyCharacterList[i].Element.ToString());
             Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = 
-                DataManager.instance.JobSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].Job.ToString());
+                DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == DataModel.instance.MyCharacterList[i].Job.ToString());
 
-            if(DataManager.instance.MyCharacterList[i].EquippedWeapon.Name != "") //MyCharacterList[i]에 무기가 배정됐다면
+            if(DataModel.instance.MyCharacterList[i].EquippedWeapon.Name != "") //MyCharacterList[i]에 무기가 배정됐다면
             {
                 //무기 이미지를 slot의 무기 sprite에 배정한다
                 Slot[i].transform.GetChild(5).GetComponent<Image>().sprite =
-                    DataManager.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].EquippedWeapon.Name);
+                    DataModel.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == DataModel.instance.MyCharacterList[i].EquippedWeapon.Name);
             }
             else //무기가 배정되지 않았다면, 알파값을 0f로 조정하여 투명하게 만든다
             {
@@ -64,11 +58,11 @@ public class KnightsUi : MonoBehaviour
 
             }
 
-            if (DataManager.instance.MyCharacterList[i].EquippedArmor.Name != "") //MyCharacterList[i]에 방어구가 배정됐다면
+            if (DataModel.instance.MyCharacterList[i].EquippedArmor.Name != "") //MyCharacterList[i]에 방어구가 배정됐다면
             {
                 //방어구 이미지를 slot의 방어구 sprite에 배정한다
                 Slot[i].transform.GetChild(6).GetComponent<Image>().sprite =
-                    DataManager.instance.ArmorSprite.FirstOrDefault(sprite => sprite.name == DataManager.instance.MyCharacterList[i].EquippedArmor.Name);
+                    DataModel.instance.ArmorSprite.FirstOrDefault(sprite => sprite.name == DataModel.instance.MyCharacterList[i].EquippedArmor.Name);
             }
             else //방어구가 배정되지 않았다면, 알파값을 0f로 조정하여 투명하게 만든다
             {
