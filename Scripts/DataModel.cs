@@ -75,7 +75,6 @@ public class DataModel : MonoBehaviour
         Load();
         //Save();
 
-        LoadSprites(); //메모리 효율성을 위해, My..List의 리소스들만 메모리에 올리고 필요한 스프라이트는 필요할 때 따로 올린다.
     }
 
 
@@ -113,8 +112,12 @@ public class DataModel : MonoBehaviour
         MyWeaponList = allDatabase.allWeapon;
         MyArmorList = allDatabase.allArmor;
 
+        LoadSprites();
+
     }
 
+
+    //메모리 효율성을 위해, My..List의 리소스들만 메모리에 올리고 필요한 스프라이트는 필요할 때 따로 올린다.
     void LoadSprites()
     {
         // 무기 스프라이트 로드

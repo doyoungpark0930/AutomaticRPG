@@ -3,40 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-public class KnightsView : MonoBehaviour
+using KnightsUI; //KnightsPresenter 스크립트에 정의되어있음
+
+public interface IKnightsView
+{
+    void SlotUpdate(List<CharacterData> MyCharacterList);
+}
+public class KnightsView : MonoBehaviour, IKnightsView
 {
     CameraDrag cameraDrag;
-    [SerializeField] GameObject[] Slot; //이거 자동화해야할듯.. 일단 mvc로 한다
+    [SerializeField] GameObject[] Slot;
+
+    KnightsPresenter knightsPresenter;
 
     void Awake()
     {
         cameraDrag = Camera.main.GetComponent<CameraDrag>();
+        knightsPresenter = new KnightsPresenter(this);
+        
     }
     void Start()
     {
         //Slot이미지를 첫 실행시에 다 받는다. 
-        ShowCharacterSlot();
+        knightsPresenter.ViewUpdate();
     }
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
-
-        ShowCharacterSlot();
+        knightsPresenter.ViewUpdate();
     }
    
 
-    /*이거 slot개수 mvp형식으로 아니면 scriptable Object로 해서 데이터 개수에따라 자동 생성
-     * allCharacterList의 수에 맞게 slot생성 그리고, myCharacterList에 따라 자물쇠 잠금 => 이건 일단 allCharaceList와 MyCharacterList를
-     * 구분만 해주면 되니까 나중에 생각
-     * */
-    private void ShowCharacterSlot() //Slot에 이미지들을 넣는다
+    public void SlotUpdate(List<CharacterData> MyCharacterList) //Slot에 이미지들을 넣는다
     {
         //일단 MyCharacterList만큼 slot생성하는걸로하자
-        for(int i = 0; i < DataModel.instance.MyCharacterList.Count; i++)
+        for(int i = 0; i < MyCharacterList.Count; i++)
         {
             Slot[i].SetActive(true);
-            Slot[i].transform.GetChild(0).GetComponent<Text>().text = DataModel.instance.MyCharacterList[i].Name;
-            Slot[i].transform.GetChild(2).GetComponent<Text>().text = DataModel.instance.MyCharacterList[i].Level.ToString();
+            Slot[i].transform.GetChild(0).GetComponent<Text>().text = MyCharacterList[i].Name;
+            Slot[i].transform.GetChild(2).GetComponent<Text>().text = MyCharacterList[i].Level.ToString();
             Slot[i].transform.GetChild(3).GetComponent<Image>().sprite =
                 DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == DataModel.instance.MyCharacterList[i].Element.ToString());
             Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = 
