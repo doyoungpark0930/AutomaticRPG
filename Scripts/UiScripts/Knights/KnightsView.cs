@@ -43,13 +43,20 @@ public class KnightsView : MonoBehaviour, IKnightsView
             Slot[i].transform.GetChild(3).GetComponent<Image>().sprite = characterData.ElementSprite;
             Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = characterData.JobSprite;
 
-            var weaponImage = Slot[i].transform.GetChild(5).GetComponent<Image>();
+            var weaponImage = Slot[i].transform.GetChild(5).GetComponent<Image>(); 
             weaponImage.sprite = characterData.WeaponSprite;
             weaponImage.color = weaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
             var armorImage = Slot[i].transform.GetChild(6).GetComponent<Image>();
             armorImage.sprite = characterData.ArmorSprite;
             armorImage.color = armorImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
+
+            var gradeParent = Slot[i].transform.GetChild(8); // Grade 오브젝트 접근
+            for (int g = 0; g < gradeParent.childCount; g++)
+            {
+                var gradeImage = gradeParent.GetChild(g).GetComponent<Image>();
+                gradeImage.gameObject.SetActive(g < characterData.Grade); // Grade 값에 따라 이미지 활성화
+            }
         }
         
 

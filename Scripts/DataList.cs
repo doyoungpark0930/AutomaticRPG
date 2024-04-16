@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using JetBrains.Annotations;
 
 public class AllDatabase   //json직렬화를 위해 클래스 따로 형성
 {
+    public MyInfo myInfo;
     public List<Character> allCharacter;
     public List<Weapon> allWeapon;
     public List<Armor> allArmor;
@@ -25,7 +27,19 @@ public enum WeaponType
 {
     Sword, Bow, Staff
 }
- //public class gold..
+
+
+[System.Serializable]
+public class MyInfo
+{
+    public string nickName = "Unknown";
+
+    public string Progress = "Not started"; //진행도
+    public int Exp = 0; //경험치
+    public int Bread = 0;
+    public int Gold = 0;
+
+}
 
 
 // Character class definition
@@ -36,7 +50,25 @@ public class Character
     private string name;
     public string Name { get { return name; } }
     public int Level;
-    public int Grade;
+    public int grade;
+
+    public int Grade
+    {
+        get { return grade; }
+        set
+        {
+            if (value < 1 || value > 3)
+            {
+                throw new ArgumentException("Grade must be between 1 and 3.");
+                // 혹은 유효하지 않은 값에 대해 기본값 설정
+                // grade = 1; // 기본값으로 설정
+            }
+            else
+            {
+                grade = value;
+            }
+        }
+    }
     [SerializeField]
     private JobType job;
     public JobType Job { get { return job; } }

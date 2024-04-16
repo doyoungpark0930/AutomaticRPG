@@ -82,14 +82,31 @@ public class DataModel : MonoBehaviour
     {
         AllDatabase allDatabase = new AllDatabase();
 
-        /*MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
+        /*
+        MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[0].EquippedArmor = MyArmorList[0];
         MyCharacterList[2].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[1].EquippedArmor = MyArmorList[1];
 
         MyCharacterList[0].Level = 26;
         MyCharacterList[1].Level = 30;
-        MyCharacterList[2].Level = 4;*/
+        MyCharacterList[2].Level = 4;
+
+        MyCharacterList[0].Grade = 2;
+        MyCharacterList[1].Grade = 1;
+        MyCharacterList[2].Grade = 3;
+
+        allDatabase.myInfo = new MyInfo();
+        allDatabase.myInfo.nickName = "µµ¿µ";
+        allDatabase.myInfo.Progress = "1-1";
+        allDatabase.myInfo.Exp = 1000;
+        allDatabase.myInfo.Bread = 100;
+        allDatabase.myInfo.Gold = 3000;
+        */
+        
+
+
+
 
         //allDatabase.allCharacter = allCharacterList;
         allDatabase.allCharacter = MyCharacterList;
