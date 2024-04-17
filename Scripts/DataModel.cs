@@ -14,6 +14,8 @@ public class DataModel : MonoBehaviour
     [SerializeField] TextAsset WeaponDB;
     [SerializeField] TextAsset ArmorDB;
 
+    public MyInfo myInfo = new MyInfo();
+
     public List<Character> allCharacterList; //캐릭터 기본 DB
     public List<Character> MyCharacterList; //내 캐릭터 DB
 
@@ -125,6 +127,7 @@ public class DataModel : MonoBehaviour
 
         string jdata = File.ReadAllText(Application.dataPath + "/Resources/MyAllDatabase.txt");
         AllDatabase allDatabase = JsonUtility.FromJson<AllDatabase>(jdata); //역직렬화
+        myInfo = allDatabase.myInfo;
         MyCharacterList = allDatabase.allCharacter;
         MyWeaponList = allDatabase.allWeapon;
         MyArmorList = allDatabase.allArmor;

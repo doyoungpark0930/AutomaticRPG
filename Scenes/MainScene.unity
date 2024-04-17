@@ -640,6 +640,12 @@ MonoBehaviour:
   CharacterDB: {fileID: 4900000, guid: 6941047c58f78704bb827d8b07e96f97, type: 3}
   WeaponDB: {fileID: 4900000, guid: 4fa61104cea33624eb59a114f0ce6a5f, type: 3}
   ArmorDB: {fileID: 4900000, guid: f4265d3833a68234aa18ae7afcedec98, type: 3}
+  myInfo:
+    nickName: Unknown
+    Progress: Not started
+    Exp: 0
+    Bread: 0
+    Gold: 0
   allCharacterList: []
   MyCharacterList: []
   allWeaponList: []
