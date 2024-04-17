@@ -4,10 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using KnightsUI; //KnightsPresenter 스크립트에 정의되어있음
 
-public interface IKnightsView
-{
-    void SlotUpdate(List<CharacterData> CharacterList);
-}
+
 public class KnightsView : MonoBehaviour, IKnightsView
 {
     CameraDrag cameraDrag;
