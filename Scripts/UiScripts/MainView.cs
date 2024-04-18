@@ -6,7 +6,7 @@ using System;
 
 
 
-public class MainUi : MonoBehaviour
+public class MainView : MonoBehaviour
 {
     CameraDrag cameraDrag;
     [SerializeField] Text NickName;

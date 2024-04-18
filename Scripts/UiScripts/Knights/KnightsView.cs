@@ -62,9 +62,9 @@ public class KnightsView : MonoBehaviour, IKnightsView
     {
 
         //MainUi 다시 띄우기
-        var mainUi = UiPool.GetObject("MainUi");
+        var mainUi = UiPool.GetObject("MainView");
         mainUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        mainUi.GetComponent<MainUi>().initialize();
+        mainUi.GetComponent<MainView>().initialize();
 
         //본인 destory
         UiPool.ReturnObject(gameObject);

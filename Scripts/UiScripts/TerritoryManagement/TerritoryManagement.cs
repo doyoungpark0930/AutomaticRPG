@@ -29,7 +29,7 @@ public class TerritoryManagement : MonoBehaviour
         cameraZoom.GetZoomIn();
 
         //MainUi 다시 띄우기
-        var mainUi = UiPool.GetObject("MainUi");
+        var mainUi = UiPool.GetObject("MainView");
         mainUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
         //건물생성지역 destroy

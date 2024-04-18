@@ -8,7 +8,7 @@ public class UiController : MonoBehaviour
 
     private void Start()
     {
-        var mainUi = UiPool.GetObject("MainUi");
+        var mainUi = UiPool.GetObject("MainView");
         mainUi.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
