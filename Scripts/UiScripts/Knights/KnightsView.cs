@@ -8,9 +8,16 @@ using KnightsUI; //KnightsPresenter 스크립트에 정의되어있음
 public class KnightsView : MonoBehaviour, IKnightsView
 {
     CameraDrag cameraDrag;
-    [SerializeField] GameObject[] Slot;
 
     KnightsPresenter knightsPresenter;
+
+    [SerializeField] GameObject[] Slot;
+    [SerializeField] Button GradeButton;
+    [SerializeField] Image GradeImage;
+    private bool GradeBright = false;
+    [SerializeField] Button LevelButton;
+    [SerializeField] Image LevelImage;
+    private bool LevelBright = false;
 
     void Awake()
     {
@@ -21,12 +28,17 @@ public class KnightsView : MonoBehaviour, IKnightsView
     void Start()
     {
         knightsPresenter.ViewUpdate();
+
+        LevelButton.onClick.AddListener(() => ToggleButtonBrightness(LevelImage, ref LevelBright));
+        GradeButton.onClick.AddListener(() => ToggleButtonBrightness(GradeImage, ref GradeBright));
     }
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
         knightsPresenter.ViewUpdate();
     }
+
+
    
 
     public void SlotUpdate(List<CharacterData> CharacterList) //Slot에 이미지들을 넣는다
@@ -58,6 +70,18 @@ public class KnightsView : MonoBehaviour, IKnightsView
         
 
     }
+
+
+    // 버튼의 밝기를 토글하는 메서드
+    private void ToggleButtonBrightness(Image buttonImage, ref bool isBright)
+    {
+        isBright = !isBright; // 상태 토글
+        Color currentColor = buttonImage.color;
+        //투명 값 조절
+        currentColor.a = isBright ? 1f : 0.5f;
+        buttonImage.color = currentColor;
+    }
+   
     public void OnExitButtonClick()
     {
 
