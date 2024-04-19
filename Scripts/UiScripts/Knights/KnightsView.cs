@@ -27,15 +27,28 @@ public class KnightsView : MonoBehaviour, IKnightsView
     }
     void Start()
     {
-        knightsPresenter.ViewUpdate();
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
 
-        LevelButton.onClick.AddListener(() => ToggleButtonBrightness(LevelImage, ref LevelBright));
-        GradeButton.onClick.AddListener(() => ToggleButtonBrightness(GradeImage, ref GradeBright));
+        LevelButton.onClick.AddListener(() =>
+        {
+            LevelBright = !LevelBright;
+            knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
+            ToggleButtonBrightness(LevelImage, ref LevelBright);
+         
+        });
+        GradeButton.onClick.AddListener(() =>
+        {
+            GradeBright = !GradeBright;
+            knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
+            ToggleButtonBrightness(GradeImage, ref GradeBright);
+
+        });
+
     }
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
-        knightsPresenter.ViewUpdate();
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
     }
 
 
@@ -75,7 +88,6 @@ public class KnightsView : MonoBehaviour, IKnightsView
     // 버튼의 밝기를 토글하는 메서드
     private void ToggleButtonBrightness(Image buttonImage, ref bool isBright)
     {
-        isBright = !isBright; // 상태 토글
         Color currentColor = buttonImage.color;
         //투명 값 조절
         currentColor.a = isBright ? 1f : 0.5f;
