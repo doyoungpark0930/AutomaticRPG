@@ -19,36 +19,37 @@ public class KnightsView : MonoBehaviour, IKnightsView
     [SerializeField] Image LevelImage;
     private bool LevelBright = false;
 
+    HashSet<Element> ElementsFilter = new HashSet<Element> { Element.Fire, Element.Water };
+
     void Awake()
     {
         cameraDrag = Camera.main.GetComponent<CameraDrag>();
         knightsPresenter = new KnightsPresenter(this);
-        
+
     }
     void Start()
     {
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright,ElementsFilter);
 
         LevelButton.onClick.AddListener(() =>
         {
             LevelBright = !LevelBright;
-            knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
+            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
             ToggleButtonBrightness(LevelImage, ref LevelBright);
          
         });
         GradeButton.onClick.AddListener(() =>
         {
             GradeBright = !GradeBright;
-            knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
+            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
             ToggleButtonBrightness(GradeImage, ref GradeBright);
 
         });
-
     }
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright);
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
     }
 
 
@@ -56,6 +57,10 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
     public void SlotUpdate(List<CharacterData> CharacterList) //Slot에 이미지들을 넣는다
     {
+        foreach(GameObject slot in Slot)
+        {
+            slot.SetActive(false);
+        }
         for (int i = 0; i < CharacterList.Count; i++)
         {
             var characterData = CharacterList[i];
