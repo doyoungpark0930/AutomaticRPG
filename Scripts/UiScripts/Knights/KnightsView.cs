@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Linq;
 using KnightsUI; //KnightsPresenter 스크립트에 정의되어있음
 
 
@@ -14,6 +12,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
     KnightsPresenter knightsPresenter;
 
     [SerializeField] GameObject[] Slot;
+
     [SerializeField] Button GradeButton;
     [SerializeField] Image GradeButtonImage;
     private bool GradeBright = false;
@@ -45,7 +44,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
         ElementAllButton.onClick.AddListener(() =>
         {
             ElementAllButtonBright = !ElementAllButtonBright;
-            UpdateElementFilter();
+            UpdateElementFilter(true) ;
             ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
         });
 
@@ -55,7 +54,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
             ElementButtons[localIndex].onClick.AddListener(() =>
             {
                 ElementButtonBright[localIndex] = !ElementButtonBright[localIndex];
-                UpdateElementFilter();
+                UpdateElementFilter(false);
                 ToggleButtonBrightness(ElementButtonImages[localIndex], ref ElementButtonBright[localIndex]);
             });
         }
@@ -129,44 +128,57 @@ public class KnightsView : MonoBehaviour, IKnightsView
         buttonImage.color = currentColor;
     }
 
-    private void UpdateElementFilter()
+    private void UpdateElementFilter(bool isAllButtonClicked)
     {
-        if(ElementAllButtonBright && ElementButtonBright.Any(x => x == true)) //All버튼이 true인 상태에서 첫 Element누를때
+        if(isAllButtonClicked) //All버튼으로 클릭 됐다면
         {
-            //All버튼 false 및 눌러진 Element버튼에 맞게 해쉬 값 할당
-            ElementAllButtonBright = false;
-            ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
-            ElementsFilter.Clear();
-            for (int i = 0; i < ElementButtonBright.Length; i++)
+            if(ElementAllButtonBright) 
             {
-                if (ElementButtonBright[i])
-                {
-                    ElementsFilter.Add((Element)i);
-                }
-            }
-        }
-        else if(ElementAllButtonBright) //All버튼눌러져서 false에서 true인 상태로 될 때 
-        {
-            ElementsFilter = new HashSet<Element> { Element.Fire, Element.Earth, Element.Water, Element.Wind };
+                //모든 속성 보이도록
+                ElementsFilter = new HashSet<Element> { Element.Fire, Element.Earth, Element.Water, Element.Wind };
 
-            //Element버튼 모두 어둡게
-            ElementButtonBright = new bool[4];
-            for (int i = 0; i < ElementButtonBright.Length; i++)
-            {
-                ToggleButtonBrightness(ElementButtonImages[i], ref ElementButtonBright[i]);
-            }
-        }
-        else //All버튼이 false인 상태에서 Element 버튼이 눌러질 때 
-        {
-            //Element버튼에 맞게 해쉬 값 할당
-            ElementsFilter.Clear();
-            for (int i = 0; i < ElementButtonBright.Length; i++)
-            {
-                if (ElementButtonBright[i])
+                //속성 버튼 모두 어둡게
+                ElementButtonBright = new bool[4];
+                for (int i = 0; i < ElementButtonBright.Length; i++)
                 {
-                    ElementsFilter.Add((Element)i);
+                    ToggleButtonBrightness(ElementButtonImages[i], ref ElementButtonBright[i]);
                 }
             }
+            else
+            {
+                ElementsFilter.Clear();
+            }
+        }
+        else //속성으로 클릭 됐다면
+        {
+            //All버튼 눌러진 상태에서 눌렀을 때
+            if(ElementAllButtonBright)
+            {
+                //All버튼 어둡게하고, 눌러진 속성 버튼에 맞게 해쉬 값 할당
+                ElementAllButtonBright = false;
+                ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
+                ElementsFilter.Clear();
+                for (int i = 0; i < ElementButtonBright.Length; i++)
+                {
+                    if (ElementButtonBright[i])
+                    {
+                        ElementsFilter.Add((Element)i);
+                    }
+                }
+            }
+            else //All버튼 안 눌러진 상태에서 (속성버튼 1개 이상 눌러진 상태일 때) 눌렀을 때 
+            {
+                //속성 버튼에 맞게 해쉬 값 할당
+                ElementsFilter.Clear();
+                for (int i = 0; i < ElementButtonBright.Length; i++)
+                {
+                    if (ElementButtonBright[i])
+                    {
+                        ElementsFilter.Add((Element)i);
+                    }
+                }
+            }
+
         }
 
         // 필터 적용
