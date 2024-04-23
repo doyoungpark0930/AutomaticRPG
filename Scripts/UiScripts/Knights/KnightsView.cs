@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Linq;
 using KnightsUI; //KnightsPresenter 스크립트에 정의되어있음
 
 
@@ -13,13 +15,22 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
     [SerializeField] GameObject[] Slot;
     [SerializeField] Button GradeButton;
-    [SerializeField] Image GradeImage;
+    [SerializeField] Image GradeButtonImage;
     private bool GradeBright = false;
     [SerializeField] Button LevelButton;
-    [SerializeField] Image LevelImage;
+    [SerializeField] Image LevelButtonImage;
     private bool LevelBright = false;
 
-    HashSet<Element> ElementsFilter = new HashSet<Element> { Element.Fire, Element.Water };
+    // 버튼과 이미지 배열 정의
+    [SerializeField] private Button ElementAllButton;
+    [SerializeField] private Image ElementAllButtonImages;
+    private bool ElementAllButtonBright = true;
+
+    [SerializeField] private Button[] ElementButtons; //Fire, Earth, Water, Wind 순
+    [SerializeField] private Image[] ElementButtonImages;
+    private bool[] ElementButtonBright = new bool[4]; //false로 4개 배열 초기화
+
+    HashSet<Element> ElementsFilter = new HashSet<Element> { Element.Fire, Element.Earth, Element.Water, Element.Wind };
 
     void Awake()
     {
@@ -29,20 +40,39 @@ public class KnightsView : MonoBehaviour, IKnightsView
     }
     void Start()
     {
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright,ElementsFilter);
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+
+        ElementAllButton.onClick.AddListener(() =>
+        {
+            ElementAllButtonBright = !ElementAllButtonBright;
+            UpdateElementFilter();
+            ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
+        });
+
+        for (int i = 0; i < ElementButtons.Length; i++)
+        {
+            int localIndex = i; //람다식 외부 변수 참조 방지용
+            ElementButtons[localIndex].onClick.AddListener(() =>
+            {
+                ElementButtonBright[localIndex] = !ElementButtonBright[localIndex];
+                UpdateElementFilter();
+                ToggleButtonBrightness(ElementButtonImages[localIndex], ref ElementButtonBright[localIndex]);
+            });
+        }
+
 
         LevelButton.onClick.AddListener(() =>
         {
             LevelBright = !LevelBright;
             knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
-            ToggleButtonBrightness(LevelImage, ref LevelBright);
+            ToggleButtonBrightness(LevelButtonImage, ref LevelBright);
          
         });
         GradeButton.onClick.AddListener(() =>
         {
             GradeBright = !GradeBright;
             knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
-            ToggleButtonBrightness(GradeImage, ref GradeBright);
+            ToggleButtonBrightness(GradeButtonImage, ref GradeBright);
 
         });
     }
@@ -98,7 +128,50 @@ public class KnightsView : MonoBehaviour, IKnightsView
         currentColor.a = isBright ? 1f : 0.5f;
         buttonImage.color = currentColor;
     }
-   
+
+    private void UpdateElementFilter()
+    {
+        if(ElementAllButtonBright && ElementButtonBright.Any(x => x == true)) //All버튼이 true인 상태에서 첫 Element누를때
+        {
+            //All버튼 false 및 눌러진 Element버튼에 맞게 해쉬 값 할당
+            ElementAllButtonBright = false;
+            ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
+            ElementsFilter.Clear();
+            for (int i = 0; i < ElementButtonBright.Length; i++)
+            {
+                if (ElementButtonBright[i])
+                {
+                    ElementsFilter.Add((Element)i);
+                }
+            }
+        }
+        else if(ElementAllButtonBright) //All버튼눌러져서 false에서 true인 상태로 될 때 
+        {
+            ElementsFilter = new HashSet<Element> { Element.Fire, Element.Earth, Element.Water, Element.Wind };
+
+            //Element버튼 모두 어둡게
+            ElementButtonBright = new bool[4];
+            for (int i = 0; i < ElementButtonBright.Length; i++)
+            {
+                ToggleButtonBrightness(ElementButtonImages[i], ref ElementButtonBright[i]);
+            }
+        }
+        else //All버튼이 false인 상태에서 Element 버튼이 눌러질 때 
+        {
+            //Element버튼에 맞게 해쉬 값 할당
+            ElementsFilter.Clear();
+            for (int i = 0; i < ElementButtonBright.Length; i++)
+            {
+                if (ElementButtonBright[i])
+                {
+                    ElementsFilter.Add((Element)i);
+                }
+            }
+        }
+
+        // 필터 적용
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+    }
     public void OnExitButtonClick()
     {
 
