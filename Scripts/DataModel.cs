@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.UI;
 using System;
 
 
@@ -75,7 +74,7 @@ public class DataModel : MonoBehaviour
 
         //Save();
         Load();
-        //Save();
+        Save();
 
     }
 
@@ -89,14 +88,18 @@ public class DataModel : MonoBehaviour
         MyCharacterList[0].EquippedArmor = MyArmorList[0];
         MyCharacterList[2].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[1].EquippedArmor = MyArmorList[1];
+        var rand = new System.Random();
 
-        MyCharacterList[0].Level = 26;
-        MyCharacterList[1].Level = 30;
-        MyCharacterList[2].Level = 4;
+        for (int i = 0; i < MyCharacterList.Count; i++)
+        {
+            MyCharacterList[i].Level = rand.Next(1, 101);  // Random level between 1 and 100
+        }
 
-        MyCharacterList[0].Grade = 2;
-        MyCharacterList[1].Grade = 1;
-        MyCharacterList[2].Grade = 3;
+
+        for (int i = 0; i < MyCharacterList.Count; i++)
+        {
+            MyCharacterList[i].Grade = rand.Next(1, 4);  // Random level between 1 and 100
+        }
 
         allDatabase.myInfo = new MyInfo();
         allDatabase.myInfo.nickName = "µµ¿µ";
@@ -105,6 +108,7 @@ public class DataModel : MonoBehaviour
         allDatabase.myInfo.Bread = 100;
         allDatabase.myInfo.Gold = 3000;
         */
+        
         
 
 
