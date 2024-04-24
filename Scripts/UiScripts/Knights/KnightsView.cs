@@ -20,7 +20,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
     [SerializeField] Image LevelButtonImage;
     private bool LevelBright = false;
 
-    // 버튼과 이미지 배열 정의
+    // 속성 버튼과 이미지 배열 정의
     [SerializeField] private Button ElementAllButton;
     [SerializeField] private Image ElementAllButtonImages;
     private bool ElementAllButtonBright = true;
@@ -29,7 +29,17 @@ public class KnightsView : MonoBehaviour, IKnightsView
     [SerializeField] private Image[] ElementButtonImages;
     private bool[] ElementButtonBright = new bool[4]; //false로 4개 배열 초기화
 
+    // 직업 버튼과 이미지 배열 정의
+    [SerializeField] private Button JobAllButton;
+    [SerializeField] private Image JobAllButtonImages;
+    private bool JobAllButtonBright = true;
+
+    [SerializeField] private Button[] JobButtons; // Warrior, Mage, Archer 순 
+    [SerializeField] private Image[] JobButtonImages;
+    private bool[] JobButtonBright = new bool[3]; //false로 3개 배열 초기화
+
     HashSet<Element> ElementsFilter = new HashSet<Element> { Element.Fire, Element.Earth, Element.Water, Element.Wind };
+    HashSet<JobType> JobsFilter = new HashSet<JobType> { JobType.Warrior, JobType.Mage, JobType.Archer };
 
     void Awake()
     {
@@ -39,7 +49,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
     }
     void Start()
     {
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
 
         ElementAllButton.onClick.AddListener(() =>
         {
@@ -59,18 +69,36 @@ public class KnightsView : MonoBehaviour, IKnightsView
             });
         }
 
+        JobAllButton.onClick.AddListener(() =>
+        {
+            JobAllButtonBright = !JobAllButtonBright;
+            UpdateJobFilter(true);
+            ToggleButtonBrightness(JobAllButtonImages, ref JobAllButtonBright);
+        });
+
+        for (int i = 0; i < JobButtons.Length; i++)
+        {
+            int localIndex = i; //람다식 외부 변수 참조 방지용
+            JobButtons[localIndex].onClick.AddListener(() =>
+            {
+                JobButtonBright[localIndex] = !JobButtonBright[localIndex];
+                UpdateJobFilter(false);
+                ToggleButtonBrightness(JobButtonImages[localIndex], ref JobButtonBright[localIndex]);
+            });
+        }
+
 
         LevelButton.onClick.AddListener(() =>
         {
             LevelBright = !LevelBright;
-            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
             ToggleButtonBrightness(LevelButtonImage, ref LevelBright);
          
         });
         GradeButton.onClick.AddListener(() =>
         {
             GradeBright = !GradeBright;
-            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
             ToggleButtonBrightness(GradeButtonImage, ref GradeBright);
 
         });
@@ -78,7 +106,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
     }
 
 
@@ -182,7 +210,64 @@ public class KnightsView : MonoBehaviour, IKnightsView
         }
 
         // 필터 적용
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter);
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
+    }
+
+    private void UpdateJobFilter(bool isAllButtonClicked)
+    {
+        if (isAllButtonClicked) //All버튼으로 클릭 됐다면
+        {
+            if (JobAllButtonBright)
+            {
+                //모든 직업 타입 보이도록
+                JobsFilter = new HashSet<JobType> { JobType.Warrior, JobType.Mage, JobType.Archer };
+
+                //직업 버튼 모두 어둡게
+                JobButtonBright = new bool[3];
+                for (int i = 0; i < JobButtonBright.Length; i++)
+                {
+                    ToggleButtonBrightness(JobButtonImages[i], ref JobButtonBright[i]);
+                }
+            }
+            else
+            {
+                JobsFilter.Clear();
+            }
+        }
+        else //직업버튼으로 클릭 됐다면
+        {
+            //All버튼 눌러진 상태에서 눌렀을 때
+            if (JobAllButtonBright)
+            {
+                //All버튼 어둡게하고, 눌러진 직업 버튼에 맞게 해쉬 값 할당
+                JobAllButtonBright = false;
+                ToggleButtonBrightness(JobAllButtonImages, ref JobAllButtonBright);
+                JobsFilter.Clear();
+                for (int i = 0; i < JobButtonBright.Length; i++)
+                {
+                    if (JobButtonBright[i])
+                    {
+                        JobsFilter.Add((JobType)i);
+                    }
+                }
+            }
+            else //All버튼 안 눌러진 상태에서 (직업버튼 1개 이상 눌러진 상태일 때) 눌렀을 때 
+            {
+                //직업 버튼에 맞게 해쉬 값 할당
+                JobsFilter.Clear();
+                for (int i = 0; i < JobButtonBright.Length; i++)
+                {
+                    if (JobButtonBright[i])
+                    {
+                        JobsFilter.Add((JobType)i);
+                    }
+                }
+            }
+
+        }
+
+        // 필터 적용
+        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
     }
     public void OnExitButtonClick()
     {

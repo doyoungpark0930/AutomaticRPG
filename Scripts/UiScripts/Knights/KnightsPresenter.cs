@@ -24,6 +24,7 @@ namespace KnightsUI
         bool LevelFilter = false; 
         bool GradeFilter = false;
         HashSet<Element> ElementsFilter;
+        HashSet<JobType> JobsFilter;
 
         public KnightsPresenter(IKnightsView knightsView)
         {
@@ -31,11 +32,12 @@ namespace KnightsUI
         }
 
         // 버튼 토글 상태에 따라 정렬
-        public void UpdateByFlags(bool level, bool grade, HashSet<Element> Elements)
+        public void UpdateByFlags(bool level, bool grade, HashSet<Element> Elements, HashSet<JobType> Jobs)
         {
             LevelFilter = level;
             GradeFilter = grade;
             ElementsFilter = Elements;
+            JobsFilter = Jobs;
             SortAndUpdateView();
         }
    
@@ -46,7 +48,7 @@ namespace KnightsUI
             // Element와 Job에 따라 필터링
             var filteredCharacters = myCharacterList
                     .Where(character =>
-                        ElementsFilter.Count == 4 || ElementsFilter.Contains(character.Element))
+                        (ElementsFilter.Count == 4 || ElementsFilter.Contains(character.Element)) && (JobsFilter.Count == 3 || JobsFilter.Contains(character.Job))  )
                     .ToList();
 
             // Grade와 Level에따른 정렬
