@@ -34,7 +34,7 @@ public class MainView : MonoBehaviour
         Gold.text = DataModel.instance.myInfo.Gold.ToString();
 
     }
-    public void OnTerritoryManagementButton()
+    public void ToTerritoryManagement()
     {
         var territoryManagement = UiPool.GetObject("TerritoryManagement");
         territoryManagement.transform.position = Vector2.zero;
@@ -43,7 +43,7 @@ public class MainView : MonoBehaviour
 
     }
 
-    public void OnKnightsButton()
+    public void ToKnightsView()
     {
         var knightsView = UiPool.GetObject("KnightsView");
         knightsView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -51,7 +51,7 @@ public class MainView : MonoBehaviour
         UiPool.ReturnObject(gameObject);
     }
 
-    public void OnAdvantureButton()
+    public void ToAdvantureView()
     {
         Debug.Log("Click OnAdvantureButton");
     }

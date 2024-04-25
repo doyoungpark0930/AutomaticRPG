@@ -24,7 +24,7 @@ public class TerritoryManagement : MonoBehaviour
 
 
 
-    public void OnExitButtonClick()
+    public void ToMainView()
     {
         cameraZoom.GetZoomIn();
 

@@ -85,7 +85,7 @@ namespace KnightsUI
                     Grade = character.Grade
                 }).ToList();
 
-            KnightsView.SlotUpdate(characterDataList,filteredCharacters);
+            KnightsView.SlotUpdate(characterDataList, filteredCharacters);
         }
         
     }

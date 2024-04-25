@@ -54,14 +54,6 @@ public class KnightsView : MonoBehaviour, IKnightsView
     }
     private void AddEventListener()
     {
-        for (int i = 0; i < Slot.Length; i++)
-        {
-            int localIndex = i; //람다식 외부 변수 참조 방지용
-            Slot[localIndex].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                print(localIndex); //인덱스를 넘길 수 있다. 
-            });
-        }
 
         ElementAllButton.onClick.AddListener(() =>
         {
@@ -125,7 +117,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
    
 
-    public void SlotUpdate(List<CharacterData> CharacterList, List<Character> CharacterInfoList) //Slot에 이미지들을 넣는다
+    public void SlotUpdate(List<CharacterData> CharacterList, List<Character> CharacterInfo) //Slot에 이미지들을 넣는다
     {
         foreach(GameObject slot in Slot)
         {
@@ -154,9 +146,23 @@ public class KnightsView : MonoBehaviour, IKnightsView
                 var gradeImage = gradeParent.GetChild(g).GetComponent<Image>();
                 gradeImage.gameObject.SetActive(g < characterData.Grade); // Grade 값에 따라 이미지 활성화
             }
+
+            //각 Slot버튼에 이벤트리스너 할당
+            int localIndex = i; //람다식 외부 변수 참조 방지용
+            var button = Slot[localIndex].GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => ToCharacterInfoView(CharacterInfo[localIndex])); //해당 캐릭터 정보를 넘김
         }
         
 
+    }
+    private void ToCharacterInfoView(Character character)
+    {
+        var characterInfoView = UiPool.GetObject("CharacterInfoView");
+        characterInfoView.GetComponent<CharacterInfoView>().SetCharacterInfo(character);
+        characterInfoView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        characterInfoView.GetComponent<CharacterInfoView>().initialize();
+        UiPool.ReturnObject(gameObject);
     }
 
 

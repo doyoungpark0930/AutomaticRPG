@@ -121,9 +121,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: KnightsUi, Assembly-CSharp
-        m_MethodName: OnExitButtonClick
+      - m_Target: {fileID: 3050035398262121196}
+        m_TargetAssemblyTypeName: CharacterInfoView, Assembly-CSharp
+        m_MethodName: ToKnightsView
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -296,6 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6150019140269563788}
+  - component: {fileID: 3050035398262121196}
   m_Layer: 5
   m_Name: CharacterInfoView
   m_TagString: Untagged
@@ -324,3 +325,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3050035398262121196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6150019140269563789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a231d28f763a4641803bc510355f978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

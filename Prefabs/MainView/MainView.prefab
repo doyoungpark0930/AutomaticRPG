@@ -750,8 +750,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 256489614667557194}
-        m_TargetAssemblyTypeName: MainUi, Assembly-CSharp
-        m_MethodName: OnKnightsButton
+        m_TargetAssemblyTypeName: MainView, Assembly-CSharp
+        m_MethodName: ToKnightsView
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1041,8 +1041,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 256489614667557194}
-        m_TargetAssemblyTypeName: MainUi, Assembly-CSharp
-        m_MethodName: OnAdvantureButton
+        m_TargetAssemblyTypeName: MainView, Assembly-CSharp
+        m_MethodName: ToAdvantureView
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1174,8 +1174,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 256489614667557194}
-        m_TargetAssemblyTypeName: MainUi, Assembly-CSharp
-        m_MethodName: OnTerritoryManagementButton
+        m_TargetAssemblyTypeName: MainView, Assembly-CSharp
+        m_MethodName: ToTerritoryManagement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
