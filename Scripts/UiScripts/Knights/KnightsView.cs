@@ -50,11 +50,23 @@ public class KnightsView : MonoBehaviour, IKnightsView
     void Start()
     {
         knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
+        AddEventListener();
+    }
+    private void AddEventListener()
+    {
+        for (int i = 0; i < Slot.Length; i++)
+        {
+            int localIndex = i; //람다식 외부 변수 참조 방지용
+            Slot[localIndex].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                print(localIndex); //인덱스를 넘길 수 있다. 
+            });
+        }
 
         ElementAllButton.onClick.AddListener(() =>
         {
             ElementAllButtonBright = !ElementAllButtonBright;
-            UpdateElementFilter(true) ;
+            UpdateElementFilter(true);
             ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
         });
 
@@ -93,7 +105,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
             LevelBright = !LevelBright;
             knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
             ToggleButtonBrightness(LevelButtonImage, ref LevelBright);
-         
+
         });
         GradeButton.onClick.AddListener(() =>
         {
@@ -103,6 +115,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
         });
     }
+
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
@@ -112,7 +125,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
    
 
-    public void SlotUpdate(List<CharacterData> CharacterList) //Slot에 이미지들을 넣는다
+    public void SlotUpdate(List<CharacterData> CharacterList, List<Character> CharacterInfoList) //Slot에 이미지들을 넣는다
     {
         foreach(GameObject slot in Slot)
         {

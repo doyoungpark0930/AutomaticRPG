@@ -72,9 +72,8 @@ public class DataModel : MonoBehaviour
 
         }
 
-        //Save();
         Load();
-        Save();
+        //Save();
 
     }
 

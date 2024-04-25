@@ -46,7 +46,7 @@ namespace KnightsUI
         {
             myCharacterList = DataModel.instance.MyCharacterList;
             // Element와 Job에 따라 필터링
-            var filteredCharacters = myCharacterList
+            List<Character> filteredCharacters = myCharacterList
                     .Where(character =>
                         (ElementsFilter.Count == 4 || ElementsFilter.Contains(character.Element)) && (JobsFilter.Count == 3 || JobsFilter.Contains(character.Job))  )
                     .ToList();
@@ -73,7 +73,7 @@ namespace KnightsUI
             }
 
             // View로의 데이터 모델 변환
-            var characterDataList = filteredCharacters
+            List<CharacterData> characterDataList = filteredCharacters
                 .Select(character => new CharacterData
                 {
                     Name = character.Name,
@@ -85,7 +85,7 @@ namespace KnightsUI
                     Grade = character.Grade
                 }).ToList();
 
-            KnightsView.SlotUpdate(characterDataList);
+            KnightsView.SlotUpdate(characterDataList,filteredCharacters);
         }
         
     }
