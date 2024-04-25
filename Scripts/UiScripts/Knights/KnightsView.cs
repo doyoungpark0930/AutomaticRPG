@@ -151,15 +151,15 @@ public class KnightsView : MonoBehaviour, IKnightsView
             int localIndex = i; //람다식 외부 변수 참조 방지용
             var button = Slot[localIndex].GetComponent<Button>();
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => ToCharacterInfoView(CharacterInfo[localIndex])); //해당 캐릭터 정보를 넘김
+            button.onClick.AddListener(() => ToCharacterInfoView(CharacterInfo , localIndex) ); //해당 캐릭터 정보를 넘김
         }
         
 
     }
-    private void ToCharacterInfoView(Character character)
+    private void ToCharacterInfoView(List<Character> characterList, int currentIndex)
     {
         var characterInfoView = UiPool.GetObject("CharacterInfoView");
-        characterInfoView.GetComponent<CharacterInfoView>().SetCharacterInfo(character);
+        characterInfoView.GetComponent<CharacterInfoView>().SetCharacterInfo(characterList, currentIndex);
         characterInfoView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         characterInfoView.GetComponent<CharacterInfoView>().initialize();
         UiPool.ReturnObject(gameObject);
