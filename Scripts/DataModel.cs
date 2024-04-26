@@ -83,7 +83,7 @@ public class DataModel : MonoBehaviour
         AllDatabase allDatabase = new AllDatabase();
 
         /*
-        MyCharacterList[0].EquippedWeapon = MyWeaponList[1];
+        MyCharacterList[0].EquippedWeapon = MyWeaponList[0];
         MyCharacterList[0].EquippedArmor = MyArmorList[0];
         MyCharacterList[2].EquippedWeapon = MyWeaponList[1];
         MyCharacterList[1].EquippedArmor = MyArmorList[1];

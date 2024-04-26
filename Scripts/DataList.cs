@@ -72,12 +72,43 @@ public class Character
     [SerializeField]
     private JobType job;
     public JobType Job { get { return job; } }
-    public Weapon EquippedWeapon;
+    [SerializeField]
+    private Weapon equippedWeapon;
+    public Weapon EquippedWeapon
+    {
+        get { return equippedWeapon; }
+        set //Job에 해당하는 무기만 장착 가능
+        {
+            if (IsWeaponValidForJob(value.Type, job))
+            {
+                equippedWeapon = value;
+            }
+            else
+            {
+                throw new InvalidOperationException($"{value.Name} cannot be equipped by a {job}.");
+            }
+        }
+    }
     public Armor EquippedArmor;
     [SerializeField]
     private Element element;
     public Element Element { get { return element; } }
     public Skill Skill;
+
+    private bool IsWeaponValidForJob(WeaponType weaponType, JobType jobType)
+    {
+        switch (jobType)
+        {
+            case JobType.Warrior:
+                return weaponType == WeaponType.Sword;
+            case JobType.Archer:
+                return weaponType == WeaponType.Bow;
+            case JobType.Mage:
+                return weaponType == WeaponType.Staff;
+            default:
+                return false;
+        }
+    }
 
     public Character(string name, string level, string grade, string job, string element, string skill)
     {
