@@ -58,7 +58,7 @@ public class DataModel : MonoBehaviour
         for (int i = 0; i < line_0.Length; i++) 
         {
             string[] row = line_0[i].Split('\t'); //CharacterDB 텝 단위로 받아서 넣음
-            allCharacterList.Add(new Character(row[0], row[1], row[2], row[3], row[4], row[5]));
+            allCharacterList.Add(new Character(row[0], row[1], row[2], row[3], row[4], row[5], row[6] ,row[7], row[8]));
         }
         for (int i = 0; i < line_1.Length; i++)
         {

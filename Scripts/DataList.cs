@@ -109,8 +109,19 @@ public class Character
                 return false;
         }
     }
-
-    public Character(string name, string level, string grade, string job, string element, string skill)
+    public int AttackPower;
+    public int Health;
+    public int Defense;
+    public float AttackSpeed = 1.0f;
+    public float CombatPower
+    {
+        get
+        {
+            return (AttackPower * 2 + Defense * 1 + Health * 0.1f) * AttackSpeed;
+        }
+    }
+    public Character(string name, string level, string grade, string job, string element, string skill,
+                     string attackPower, string health, string defense)
     {
         this.name = name;
         this.Level = int.Parse(level);
@@ -118,7 +129,9 @@ public class Character
         this.job = (JobType)Enum.Parse(typeof(JobType), job);
         this.element = (Element)Enum.Parse(typeof(Element), element);
         this.Skill = new Skill(skill);
-
+        this.AttackPower = int.Parse(attackPower);
+        this.Health = int.Parse(health);
+        this.Defense = int.Parse(defense);
     }
 }
 

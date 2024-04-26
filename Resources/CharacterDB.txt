@@ -1,20 +1,20 @@
-무명기사	1	1	Warrior	Fire	베기
-바이올렛	1	1	Mage	Wind	썬더볼트
-헤스티아	1	1	Archer	Water	에로우봄
-헬리오	1	1	Warrior	Fire	베기2
-케루스	1	1	Mage	Wind	힐
-델핀	1	1	Archer	Earth	에로우봄2
-오멘	1	1	Warrior	Fire	스트라이크
-유이스	1	1	Mage	Water	파도
-펠슨	1	1	Archer	Earth	에로우봄3
-잭슨	1	1	Warrior	Earth	스트라이크2
-로이드	1	2	Warrior	Earth	베기3
-알리시야	1	3	Mage	Water	파도2
-아수라	1	1	Archer	Fire	에로우봄4
-와이즈	1	3	Warrior	Water	파도3
-랜슬롯	1	2	Mage	Wind	장풍
-칠리반	1	1	Archer	Wind	에로우장풍
-밀레나	1	2	Warrior	Fire	베기4
-델리	1	3	Mage	Earth	머리깨기
-르네	1	2	Archer	Water	파도4
-마리모	1	1	Warrior	Fire	베기5
+무명기사	1	1	Warrior	Fire	베기	5	100	1
+바이올렛	1	1	Mage	Wind	썬더볼트	5	100	1
+헤스티아	1	1	Archer	Water	에로우봄	5	100	1
+헬리오	1	2	Warrior	Fire	베기2	10	150	2
+케루스	1	1	Mage	Wind	힐	5	100	1
+델핀	1	1	Archer	Earth	에로우봄2	5	100	1
+오멘	1	3	Warrior	Fire	스트라이크	20	200	3
+유이스	1	1	Mage	Water	파도	5	100	1
+펠슨	1	1	Archer	Earth	에로우봄3	5	100	1
+잭슨	1	1	Warrior	Earth	스트라이크2	5	100	1
+로이드	1	2	Warrior	Earth	베기3	10	150	2
+알리시야	1	3	Mage	Water	파도2	20	200	3
+아수라	1	1	Archer	Fire	에로우봄4	5	100	1
+와이즈	1	3	Warrior	Water	파도3	20	200	3
+랜슬롯	1	2	Mage	Wind	장풍	10	150	2
+칠리반	1	1	Archer	Wind	에로우장풍	5	100	1
+밀레나	1	2	Warrior	Fire	베기4	10	150	2
+델리	1	3	Mage	Earth	머리깨기	20	200	3
+르네	1	2	Archer	Water	파도4	10	150	2
+마리모	1	1	Warrior	Fire	베기5	5	100	1
