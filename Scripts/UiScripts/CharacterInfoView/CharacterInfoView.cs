@@ -1,8 +1,5 @@
-using KnightsUI;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,15 +13,23 @@ public class CharacterInfoView : MonoBehaviour
     [SerializeField] Button RightButton;
 
     [SerializeField] GameObject[] stars; //Grade이미지 배열
+    [SerializeField] Text GradeText;
+    [SerializeField] Text NameText;
+    [SerializeField] Text ElementText;
+    [SerializeField] Image ElementImage;
+    [SerializeField] Text JobText;
+    [SerializeField] Image JobImage;
+    [SerializeField] Text LevelText;
+    [SerializeField] Text CombatPowerText;
+    [SerializeField] Text AttackPowerText;
+    [SerializeField] Text HealthText;
+    [SerializeField] Text DefenseText;
+    [SerializeField] Text AttackSpeedText;
 
     private void Awake()
     {
         LeftButton.onClick.AddListener(OnClickLeft);
         RightButton.onClick.AddListener(OnClickRight);
-    }
-    public void SetCharacterInfo(List<Character> characterList)
-    {
-        this.characterList = characterList;
     }
 
     public void SetCharacterInfo(List<Character> characterList, int index)
@@ -37,10 +42,23 @@ public class CharacterInfoView : MonoBehaviour
         this.characterList = characterList;
         this.characterInfo = characterList[index];
         this.currentIndex = index;
-        UpdateGradeImage(characterInfo.grade);
-        print(currentIndex + characterInfo.Name);
+        UpdateCharacterInfo();
     }
+    private void UpdateCharacterInfo()
+    {
+        UpdateGradeImage(characterInfo.grade);
+        NameText.text = characterInfo.Name;
+        ElementText.text = characterInfo.Element.ToString();
+        JobText.text = characterInfo.Job.ToString();
+        LevelText.text = characterInfo.Level.ToString();
 
+        CombatPowerText.text = characterInfo.CombatPower.ToString();
+        AttackPowerText.text = characterInfo.AttackPower.ToString();
+        HealthText.text = characterInfo.Health.ToString();
+        DefenseText.text = characterInfo.Defense.ToString();
+        AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
+
+    }
     private void UpdateGradeImage(int grade) //grade에 따른 별 중앙 정렬
     {
         // 먼저 모든 별을 비활성화
@@ -64,7 +82,7 @@ public class CharacterInfoView : MonoBehaviour
     }
     public void initialize() //onEnable대체
     {
-        print(currentIndex + characterInfo.Name);
+        SetCharacterInfo(characterList, currentIndex);
     }
 
     public void OnClickLeft()
@@ -72,13 +90,13 @@ public class CharacterInfoView : MonoBehaviour
         if (currentIndex > 0) // 왼쪽에 캐릭터가 있는지 확인
         {
             currentIndex--;
-            SetCharacterInfo(characterList, currentIndex);
         }
         else
         {
             currentIndex = characterList.Count - 1;
-            SetCharacterInfo(characterList, currentIndex);
         }
+        SetCharacterInfo(characterList, currentIndex);
+
     }
 
     public void OnClickRight()
@@ -86,13 +104,12 @@ public class CharacterInfoView : MonoBehaviour
         if (currentIndex < characterList.Count -1) // 오른쪽에 캐릭터가 있는지 확인
         {
             currentIndex++;
-            SetCharacterInfo(characterList, currentIndex);
         }
         else
         {
             currentIndex = 0;
-            SetCharacterInfo(characterList, currentIndex);
         }
+        SetCharacterInfo(characterList, currentIndex);
     }
 
     public void ToKnightsView()
