@@ -4018,6 +4018,7 @@ MonoBehaviour:
   - {fileID: 1537587538288683059}
   - {fileID: 2882978069331456041}
   GradeText: {fileID: 7924287741762415278}
+  GradeColor: {fileID: 654242555833839036}
   NameText: {fileID: 8589206767306466302}
   ElementText: {fileID: 667171049010783654}
   ElementImage: {fileID: 1354906394527035880}
@@ -5100,7 +5101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.52971697, g: 0.19186334, b: 0.5597484, a: 1}
+  m_Color: {r: 0.47058824, g: 0.19607843, b: 0.54901963, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

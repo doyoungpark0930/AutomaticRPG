@@ -14,6 +14,7 @@ public class CharacterInfoView : MonoBehaviour
 
     [SerializeField] GameObject[] stars; //Grade이미지 배열
     [SerializeField] Text GradeText;
+    [SerializeField] Image GradeColor;
     [SerializeField] Text NameText;
     [SerializeField] Text ElementText;
     [SerializeField] Image ElementImage;
@@ -47,6 +48,7 @@ public class CharacterInfoView : MonoBehaviour
     private void UpdateCharacterInfo()
     {
         UpdateGradeImage(characterInfo.grade);
+        GradeColorUpdate(characterInfo.grade);
         NameText.text = characterInfo.Name;
         ElementText.text = characterInfo.Element.ToString();
         JobText.text = characterInfo.Job.ToString();
@@ -58,6 +60,11 @@ public class CharacterInfoView : MonoBehaviour
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
 
+    }
+
+    public void initialize() //onEnable대체
+    {
+        SetCharacterInfo(characterList, currentIndex);
     }
     private void UpdateGradeImage(int grade) //grade에 따른 별 중앙 정렬
     {
@@ -80,9 +87,29 @@ public class CharacterInfoView : MonoBehaviour
             stars[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(startPosition + (i * starWidth), stars[i].GetComponent<RectTransform>().anchoredPosition.y);
         }
     }
-    public void initialize() //onEnable대체
+    
+    private void GradeColorUpdate(int grade)
     {
-        SetCharacterInfo(characterList, currentIndex);
+        switch (grade)
+        {
+            case 1:
+                GradeText.text = "일반";
+                GradeColor.color = new Color(100f/255f, 100f/255f, 100f/255f);
+                break;
+            case 2:
+                GradeText.text = "에픽";
+                GradeColor.color = new Color(25f/255f, 50f/255f, 75f/255f);
+                break;
+            case 3:
+                GradeText.text = "유니크";
+                GradeColor.color = new Color(120f / 255f, 50f / 255f, 140f / 255f);
+                break;
+            default:
+                Debug.LogError("Invalid grade value :" + grade);
+                break;
+
+
+        }
     }
 
     public void OnClickLeft()
