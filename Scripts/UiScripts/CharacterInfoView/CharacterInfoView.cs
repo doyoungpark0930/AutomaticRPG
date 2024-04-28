@@ -4,8 +4,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterInfoView : MonoBehaviour
+public interface ICharacterInfoView
 {
+    public void UpdateCharacterInfo(InfoData infodata);
+    public void ElementAndJobUpdate(InfoData infodata);
+}
+
+public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
+{
+    CharacterInfoPresenter characterInfoPresenter;
+
     private List<Character> characterList;
     private Character characterInfo;
     private int currentIndex;
@@ -40,12 +48,15 @@ public class CharacterInfoView : MonoBehaviour
 
     //LevelUp버튼
     [SerializeField] Button LevelUpButton;
+
     //LevelUp에 요구되는 Exp와 Gold
     [SerializeField] Text NeededExp;
     [SerializeField] Text NeededGold;
 
     private void Awake()
     {
+        characterInfoPresenter = new CharacterInfoPresenter(this);
+
         LeftButton.onClick.AddListener(OnLeftButtonClick);
         RightButton.onClick.AddListener(OnRightButtonClick);
         LevelUpButton.onClick.AddListener(OnLevelUpButtonClick);
@@ -63,19 +74,19 @@ public class CharacterInfoView : MonoBehaviour
         this.characterList = characterList;
         this.characterInfo = characterList[index];
         this.currentIndex = index;
-        UpdateCharacterInfo();
+        characterInfoPresenter.UpdateView(characterInfo);
     }
-    private void UpdateCharacterInfo()
+    public void UpdateCharacterInfo(InfoData infodata)
     {
-        UpdateGradeImage();
-        GradeColorUpdate();
-        ElementAndJobUpdate();
+        UpdateGradeImage(); //DataModel사용 x
+        GradeColorUpdate(); //DataModel사용 x. 나중에 코드 가독성을 위해서 Presenter에서 조작 고려
+        ElementAndJobUpdate(infodata);
         NameText.text = characterInfo.Name;
         LevelText.text = characterInfo.Level.ToString();
-        WeaponImage.sprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == characterInfo.EquippedWeapon.Name);
+        WeaponImage.sprite = infodata.WeaponSprite;
         WeaponImage.color = WeaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
-        ArmorImage.sprite = DataModel.instance.ArmorSprite.FirstOrDefault(sprite => sprite.name == characterInfo.EquippedArmor.Name);
+        ArmorImage.sprite = infodata.ArmorSprite;
         ArmorImage.color = ArmorImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
 
@@ -151,47 +162,13 @@ public class CharacterInfoView : MonoBehaviour
         }
     }
 
-    private void ElementAndJobUpdate()
+    public void ElementAndJobUpdate(InfoData infodata)
     {
-        switch(characterInfo.Job)
-        {
-            case JobType.Warrior:
-                JobText.text = "전사";
-                JobImage.sprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Job.ToString());
-                break;
-            case JobType.Mage:
-                JobText.text = "마법사";
-                JobImage.sprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Job.ToString());
-                break;
-            case JobType.Archer:
-                JobText.text = "궁수";
-                JobImage.sprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Job.ToString());
-                break;
-            default:
-                Debug.LogError("Invalid JobType :" + characterInfo.Job);
-                break;
-        }
-        switch(characterInfo.Element)
-        {
-            case Element.Fire:
-                ElementText.text = "불";
-                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
-                break;
-            case Element.Earth:
-                ElementText.text = "대지";
-                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
-                break;
-            case Element.Water:
-                ElementText.text = "물";
-                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
-                break;
-            case Element.Wind:
-                ElementText.text = "바람";
-                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
-                break;
-            default:
-                break;
-        }
+
+        JobText.text = infodata.JobName;
+        JobImage.sprite = infodata.JobSprite;
+        ElementText.text = infodata.ElementName;
+        ElementImage.sprite = infodata.ElementSprite;
     }
     public void OnLeftButtonClick()
     {
