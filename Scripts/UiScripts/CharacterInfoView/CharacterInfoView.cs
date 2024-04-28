@@ -49,6 +49,8 @@ public class CharacterInfoView : MonoBehaviour
         LeftButton.onClick.AddListener(OnLeftButtonClick);
         RightButton.onClick.AddListener(OnRightButtonClick);
         LevelUpButton.onClick.AddListener(OnLevelUpButtonClick);
+
+        EventManager.OnUserInfoUpdated += CharacterViewMyInfoUpdate;
     }
 
     public void SetCharacterInfo(List<Character> characterList, int index)
@@ -83,11 +85,7 @@ public class CharacterInfoView : MonoBehaviour
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
 
-        Exp.text = DataModel.instance.myInfo.Exp.ToString();
-        Gold.text = DataModel.instance.myInfo.Gold.ToString();
-
-        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
-        NeededGold.text = (2560 + characterInfo.Level * 200).ToString();
+        EventManager.UserInfoUpdated();
 
     }
 
@@ -95,6 +93,18 @@ public class CharacterInfoView : MonoBehaviour
     {
         SetCharacterInfo(characterList, currentIndex);
     }
+    private void CharacterViewMyInfoUpdate()
+    {
+        Exp.text = DataModel.instance.myInfo.Exp.ToString();
+        Gold.text = DataModel.instance.myInfo.Gold.ToString();
+
+        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
+        NeededGold.text = (100 + characterInfo.Level * 10).ToString();
+
+    }
+
+
+
     private void UpdateGradeImage() //grade에 따른 별 중앙 정렬
     {
         // 먼저 모든 별을 비활성화
@@ -210,10 +220,43 @@ public class CharacterInfoView : MonoBehaviour
         SetCharacterInfo(characterList, currentIndex);
     }
 
+
+    private void OnLevelUp()
+    {
+        //스텟Up
+        characterInfo.Level++;
+        characterInfo.AttackPower += 1;
+        characterInfo.Defense += 1;
+        characterInfo.Health += 10;
+
+        //스텟 텍스트 초기화
+        LevelText.text = characterInfo.Level.ToString();
+        CombatPowerText.text = characterInfo.CombatPower.ToString();
+        AttackPowerText.text = characterInfo.AttackPower.ToString();
+        HealthText.text = characterInfo.Health.ToString();
+        DefenseText.text = characterInfo.Defense.ToString();
+        AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
+
+        EventManager.UserInfoUpdated();
+    }
+
     public void OnLevelUpButtonClick()
     {
-        //캐릭터 등급,레벨 고려해서 Exp와 Level에 요구 값 넣기.
-        //레벨 1당 골드비용 *1.1, Exp는 레벨 10당 2배
+      //MyInfo에서 차감
+      //저장
+       if(DataModel.instance.myInfo.Gold>= int.Parse(NeededGold.text) && DataModel.instance.myInfo.Exp >= int.Parse(NeededExp.text))
+        {
+            DataModel.instance.myInfo.Gold -= int.Parse(NeededGold.text);
+            DataModel.instance.myInfo.Exp -= int.Parse(NeededExp.text);
+
+            OnLevelUp();
+            DataModel.instance.OnSaveRequested?.Invoke();
+
+        }
+        else
+        {
+            Debug.Log("Gold or Exp is not enough");
+        }
     }
     public void ToKnightsView()
     {

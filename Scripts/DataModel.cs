@@ -9,6 +9,13 @@ public class DataModel : MonoBehaviour
 {
     public static DataModel instance = null;
 
+    public Action OnSaveRequested; //Save를 직접적으로 접근하는 것을 방지하기 위한 Save이벤트
+
+    public DataModel()
+    {
+        OnSaveRequested = Save; // Delegate에 Save 메서드 연결
+    }
+
     [SerializeField] TextAsset CharacterDB;
     [SerializeField] TextAsset WeaponDB;
     [SerializeField] TextAsset ArmorDB;
@@ -49,6 +56,8 @@ public class DataModel : MonoBehaviour
 
         Initialize();
     }
+
+
 
     void Initialize()
     {
@@ -119,7 +128,7 @@ public class DataModel : MonoBehaviour
         allDatabase.allWeapon = MyWeaponList;
         //allDatabase.allArmor = allArmorList;
         allDatabase.allArmor = MyArmorList;
-
+        allDatabase.myInfo = myInfo;
         string jdata = JsonUtility.ToJson(allDatabase); //직렬화
         File.WriteAllText(Application.dataPath + "/Resources/MyAllDatabase.txt", jdata);
 

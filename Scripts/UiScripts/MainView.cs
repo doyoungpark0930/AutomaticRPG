@@ -18,7 +18,7 @@ public class MainView : MonoBehaviour
     private void Awake()
     {
         cameraDrag = Camera.main.GetComponent<CameraDrag>();
-        EventManager.OnUserInfoUpdated += MainInfoUpdate;
+        EventManager.OnUserInfoUpdated += MainViewMyInfoUpdate;
         NickName.text= DataModel.instance.myInfo.nickName;
         EventManager.UserInfoUpdated();
     }
@@ -26,7 +26,7 @@ public class MainView : MonoBehaviour
     {
         cameraDrag.enabled = true; //Ä«¸Þ¶ó Drag On
     }
-    private void MainInfoUpdate()
+    private void MainViewMyInfoUpdate()
     {
         Progress.text = DataModel.instance.myInfo.Progress;
         Bread.text = DataModel.instance.myInfo.Bread.ToString();
