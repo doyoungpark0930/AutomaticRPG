@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ public class CharacterInfoView : MonoBehaviour
     [SerializeField] Button RightButton;
 
     [SerializeField] GameObject[] stars; //Grade이미지 배열
+
+    //CharacterInfo
     [SerializeField] Text GradeText;
     [SerializeField] Image GradeColor;
     [SerializeField] Text NameText;
@@ -20,6 +23,10 @@ public class CharacterInfoView : MonoBehaviour
     [SerializeField] Image ElementImage;
     [SerializeField] Text JobText;
     [SerializeField] Image JobImage;
+    [SerializeField] Image WeaponImage;
+    [SerializeField] Image ArmorImage;
+
+    //CharacterStats
     [SerializeField] Text LevelText;
     [SerializeField] Text CombatPowerText;
     [SerializeField] Text AttackPowerText;
@@ -27,10 +34,21 @@ public class CharacterInfoView : MonoBehaviour
     [SerializeField] Text DefenseText;
     [SerializeField] Text AttackSpeedText;
 
+    //MyInfo
+    [SerializeField] Text Exp;
+    [SerializeField] Text Gold;
+
+    //LevelUp버튼
+    [SerializeField] Button LevelUpButton;
+    //LevelUp에 요구되는 Exp와 Gold
+    [SerializeField] Text NeededExp;
+    [SerializeField] Text NeededGold;
+
     private void Awake()
     {
-        LeftButton.onClick.AddListener(OnClickLeft);
-        RightButton.onClick.AddListener(OnClickRight);
+        LeftButton.onClick.AddListener(OnLeftButtonClick);
+        RightButton.onClick.AddListener(OnRightButtonClick);
+        LevelUpButton.onClick.AddListener(OnLevelUpButtonClick);
     }
 
     public void SetCharacterInfo(List<Character> characterList, int index)
@@ -47,12 +65,17 @@ public class CharacterInfoView : MonoBehaviour
     }
     private void UpdateCharacterInfo()
     {
-        UpdateGradeImage(characterInfo.grade);
-        GradeColorUpdate(characterInfo.grade);
+        UpdateGradeImage();
+        GradeColorUpdate();
+        ElementAndJobUpdate();
         NameText.text = characterInfo.Name;
-        ElementText.text = characterInfo.Element.ToString();
-        JobText.text = characterInfo.Job.ToString();
         LevelText.text = characterInfo.Level.ToString();
+        WeaponImage.sprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == characterInfo.EquippedWeapon.Name);
+        WeaponImage.color = WeaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
+
+        ArmorImage.sprite = DataModel.instance.ArmorSprite.FirstOrDefault(sprite => sprite.name == characterInfo.EquippedArmor.Name);
+        ArmorImage.color = ArmorImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
+
 
         CombatPowerText.text = characterInfo.CombatPower.ToString();
         AttackPowerText.text = characterInfo.AttackPower.ToString();
@@ -60,13 +83,19 @@ public class CharacterInfoView : MonoBehaviour
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
 
+        Exp.text = DataModel.instance.myInfo.Exp.ToString();
+        Gold.text = DataModel.instance.myInfo.Gold.ToString();
+
+        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
+        NeededGold.text = (2560 + characterInfo.Level * 200).ToString();
+
     }
 
     public void initialize() //onEnable대체
     {
         SetCharacterInfo(characterList, currentIndex);
     }
-    private void UpdateGradeImage(int grade) //grade에 따른 별 중앙 정렬
+    private void UpdateGradeImage() //grade에 따른 별 중앙 정렬
     {
         // 먼저 모든 별을 비활성화
         foreach (var star in stars)
@@ -75,7 +104,7 @@ public class CharacterInfoView : MonoBehaviour
         }
 
         // 그런 다음, 등급에 따라 별을 활성화하고 중앙에 배치.
-        int activeStars = grade; 
+        int activeStars = characterInfo.grade; 
         float starWidth = stars[0].GetComponent<RectTransform>().sizeDelta.x; // 하나의 별 너비.
         float totalWidth = starWidth * activeStars; // 활성화된 별의 총 너비.
         float startPosition = -(totalWidth / 2) + (starWidth / 2); // 왼쪽에서부터 별을 배치
@@ -88,9 +117,9 @@ public class CharacterInfoView : MonoBehaviour
         }
     }
     
-    private void GradeColorUpdate(int grade)
+    private void GradeColorUpdate()
     {
-        switch (grade)
+        switch (characterInfo.grade)
         {
             case 1:
                 GradeText.text = "일반";
@@ -105,14 +134,56 @@ public class CharacterInfoView : MonoBehaviour
                 GradeColor.color = new Color(120f / 255f, 50f / 255f, 140f / 255f);
                 break;
             default:
-                Debug.LogError("Invalid grade value :" + grade);
+                Debug.LogError("Invalid grade value :" + characterInfo.grade);
                 break;
 
 
         }
     }
 
-    public void OnClickLeft()
+    private void ElementAndJobUpdate()
+    {
+        switch(characterInfo.Job)
+        {
+            case JobType.Warrior:
+                JobText.text = "전사";
+                JobImage.sprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Job.ToString());
+                break;
+            case JobType.Mage:
+                JobText.text = "마법사";
+                JobImage.sprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Job.ToString());
+                break;
+            case JobType.Archer:
+                JobText.text = "궁수";
+                JobImage.sprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Job.ToString());
+                break;
+            default:
+                Debug.LogError("Invalid JobType :" + characterInfo.Job);
+                break;
+        }
+        switch(characterInfo.Element)
+        {
+            case Element.Fire:
+                ElementText.text = "불";
+                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
+                break;
+            case Element.Earth:
+                ElementText.text = "대지";
+                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
+                break;
+            case Element.Water:
+                ElementText.text = "물";
+                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
+                break;
+            case Element.Wind:
+                ElementText.text = "바람";
+                ElementImage.sprite = DataModel.instance.ElementSprite.FirstOrDefault(sprite => sprite.name == characterInfo.Element.ToString());
+                break;
+            default:
+                break;
+        }
+    }
+    public void OnLeftButtonClick()
     {
         if (currentIndex > 0) // 왼쪽에 캐릭터가 있는지 확인
         {
@@ -126,7 +197,7 @@ public class CharacterInfoView : MonoBehaviour
 
     }
 
-    public void OnClickRight()
+    public void OnRightButtonClick()
     {
         if (currentIndex < characterList.Count -1) // 오른쪽에 캐릭터가 있는지 확인
         {
@@ -139,6 +210,11 @@ public class CharacterInfoView : MonoBehaviour
         SetCharacterInfo(characterList, currentIndex);
     }
 
+    public void OnLevelUpButtonClick()
+    {
+        //캐릭터 등급,레벨 고려해서 Exp와 Level에 요구 값 넣기.
+        //레벨 1당 골드비용 *1.1, Exp는 레벨 10당 2배
+    }
     public void ToKnightsView()
     {
         var knightsView = UiPool.GetObject("KnightsView");

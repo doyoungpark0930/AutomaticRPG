@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using JetBrains.Annotations;
 
 public class AllDatabase   //json직렬화를 위해 클래스 따로 형성
 {
