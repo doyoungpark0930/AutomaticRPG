@@ -116,8 +116,6 @@ public class DataModel : MonoBehaviour
         allDatabase.myInfo.Bread = 100;
         allDatabase.myInfo.Gold = 3000;
         */
-        
-        
 
 
 

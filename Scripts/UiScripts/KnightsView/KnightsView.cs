@@ -13,12 +13,13 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
     [SerializeField] GameObject[] Slot;
 
-    [SerializeField] Button GradeButton;
-    [SerializeField] Image GradeButtonImage;
-    private bool GradeBright = false;
-    [SerializeField] Button LevelButton;
-    [SerializeField] Image LevelButtonImage;
-    private bool LevelBright = false;
+    [SerializeField] Button GradeSortButton;
+    [SerializeField] Image GradeSortButtonImage;
+    private bool GradeSortBright = false;
+
+    [SerializeField] Button LevelSortButton;
+    [SerializeField] Image LevelSortButtonImage;
+    private bool LevelSortBright = false;
 
     // 속성 버튼과 이미지 배열 정의
     [SerializeField] private Button ElementAllButton;
@@ -49,7 +50,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
     }
     void Start()
     {
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
+        knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
         AddEventListener();
     }
     private void AddEventListener()
@@ -92,18 +93,18 @@ public class KnightsView : MonoBehaviour, IKnightsView
         }
 
 
-        LevelButton.onClick.AddListener(() =>
+        LevelSortButton.onClick.AddListener(() =>
         {
-            LevelBright = !LevelBright;
-            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
-            ToggleButtonBrightness(LevelButtonImage, ref LevelBright);
+            LevelSortBright = !LevelSortBright;
+            knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
+            ToggleButtonBrightness(LevelSortButtonImage, ref LevelSortBright);
 
         });
-        GradeButton.onClick.AddListener(() =>
+        GradeSortButton.onClick.AddListener(() =>
         {
-            GradeBright = !GradeBright;
-            knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
-            ToggleButtonBrightness(GradeButtonImage, ref GradeBright);
+            GradeSortBright = !GradeSortBright;
+            knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
+            ToggleButtonBrightness(GradeSortButtonImage, ref GradeSortBright);
 
         });
     }
@@ -111,7 +112,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
     public void initialize() //onEnable대체
     {
         cameraDrag.enabled = false; //카메라 Drag Off
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
+        knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
     }
 
 
@@ -229,7 +230,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
         }
 
         // 필터 적용
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
+        knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
     }
 
     private void UpdateJobFilter(bool isAllButtonClicked)
@@ -286,7 +287,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
         }
 
         // 필터 적용
-        knightsPresenter.UpdateByFlags(LevelBright, GradeBright, ElementsFilter, JobsFilter);
+        knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
     }
     public void OnExitButtonClick()
     {

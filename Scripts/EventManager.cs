@@ -2,10 +2,10 @@ using System;
 
 public class EventManager
 {
-    public static event Action OnUserInfoUpdated;
+    public static event Action<MyInfo> OnUserInfoUpdated;
 
-    public static void UserInfoUpdated()
+    public static void UserInfoUpdated(MyInfo myinfo)
     {
-        OnUserInfoUpdated?.Invoke();
+        OnUserInfoUpdated?.Invoke(myinfo);
     }
 }

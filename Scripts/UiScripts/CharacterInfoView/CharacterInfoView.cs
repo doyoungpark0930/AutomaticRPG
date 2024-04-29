@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using CharacterInfoUI;
 
-public interface ICharacterInfoView
-{
-    public void UpdateCharacterInfo(InfoData infodata);
-    public void ElementAndJobUpdate(InfoData infodata);
-}
+
 
 public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
 {
@@ -59,10 +56,25 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
 
         LeftButton.onClick.AddListener(OnLeftButtonClick);
         RightButton.onClick.AddListener(OnRightButtonClick);
-        LevelUpButton.onClick.AddListener(OnLevelUpButtonClick);
+        LevelUpButton.onClick.AddListener(characterInfoPresenter.OnLevelUpButtonClick);
 
-        EventManager.OnUserInfoUpdated += CharacterViewMyInfoUpdate;
     }
+
+    public void initialize() //onEnable대체
+    {
+        SetCharacterInfo(characterList, currentIndex);
+    }
+
+    public void CharacterViewMyInfoUpdate(MyInfo myInfo) //UserInfo업데이트하는 매니저에 할당할 것
+    {
+        Exp.text = myInfo.Exp.ToString();
+        Gold.text = myInfo.Gold.ToString();
+
+        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
+        NeededGold.text = (100 + characterInfo.Level * 10).ToString();
+
+    }
+
 
     public void SetCharacterInfo(List<Character> characterList, int index)
     {
@@ -76,44 +88,42 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
         this.currentIndex = index;
         characterInfoPresenter.UpdateView(characterInfo);
     }
+
+
     public void UpdateCharacterInfo(InfoData infodata)
     {
-        UpdateGradeImage(); //DataModel사용 x
-        GradeColorUpdate(); //DataModel사용 x. 나중에 코드 가독성을 위해서 Presenter에서 조작 고려
-        ElementAndJobUpdate(infodata);
+        //등급 이미지 및 배너 색 업데이트
+        UpdateGradeImage(); 
+        GradeColorUpdate();
+
+        //Element와 Job 업데이트
+        JobText.text = infodata.JobName;
+        JobImage.sprite = infodata.JobSprite;
+        ElementText.text = infodata.ElementName;
+        ElementImage.sprite = infodata.ElementSprite;
+
+        //캐릭터 이름 및 레벨 업데이트
         NameText.text = characterInfo.Name;
         LevelText.text = characterInfo.Level.ToString();
+
+        //무기 이미지와 방어구 이미지 업데이트
         WeaponImage.sprite = infodata.WeaponSprite;
         WeaponImage.color = WeaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
         ArmorImage.sprite = infodata.ArmorSprite;
         ArmorImage.color = ArmorImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
-
+        //캐릭터 스텟 업데이트
         CombatPowerText.text = characterInfo.CombatPower.ToString();
         AttackPowerText.text = characterInfo.AttackPower.ToString();
         HealthText.text = characterInfo.Health.ToString();
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
 
-        EventManager.UserInfoUpdated();
+        //UserInfo 이벤트매니저 구동
+        EventManager.UserInfoUpdated(infodata.myinfo);
 
     }
-
-    public void initialize() //onEnable대체
-    {
-        SetCharacterInfo(characterList, currentIndex);
-    }
-    private void CharacterViewMyInfoUpdate()
-    {
-        Exp.text = DataModel.instance.myInfo.Exp.ToString();
-        Gold.text = DataModel.instance.myInfo.Gold.ToString();
-
-        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
-        NeededGold.text = (100 + characterInfo.Level * 10).ToString();
-
-    }
-
 
 
     private void UpdateGradeImage() //grade에 따른 별 중앙 정렬
@@ -160,17 +170,45 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
 
 
         }
-    }
+    } //grade에 따른 배너 색 변경
 
-    public void ElementAndJobUpdate(InfoData infodata)
+
+
+    public void LevelUp(MyInfo myInfo)
     {
+       if(myInfo.Gold>= int.Parse(NeededGold.text) && myInfo.Exp >= int.Parse(NeededExp.text)) //레벨 업당 Gold와 Exp가 충분하다면
+        {
+            myInfo.Gold -= int.Parse(NeededGold.text);
+            myInfo.Exp -= int.Parse(NeededExp.text);
 
-        JobText.text = infodata.JobName;
-        JobImage.sprite = infodata.JobSprite;
-        ElementText.text = infodata.ElementName;
-        ElementImage.sprite = infodata.ElementSprite;
+            OnLevelUp();
+            EventManager.UserInfoUpdated(myInfo);
+
+        }
+        else
+        {
+            Debug.Log("Gold or Exp is not enough");
+        }
     }
-    public void OnLeftButtonClick()
+
+    private void OnLevelUp()
+    {
+        //레벨 1업당 스텟 상승
+        characterInfo.Level++;
+        characterInfo.AttackPower += 1;
+        characterInfo.Defense += 1;
+        characterInfo.Health += 10;
+
+        //스텟 텍스트 초기화
+        LevelText.text = characterInfo.Level.ToString();
+        CombatPowerText.text = characterInfo.CombatPower.ToString();
+        AttackPowerText.text = characterInfo.AttackPower.ToString();
+        HealthText.text = characterInfo.Health.ToString();
+        DefenseText.text = characterInfo.Defense.ToString();
+        AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
+    }
+
+    public void OnLeftButtonClick() //왼쪽 캐릭터 정보로 이동
     {
         if (currentIndex > 0) // 왼쪽에 캐릭터가 있는지 확인
         {
@@ -184,9 +222,9 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
 
     }
 
-    public void OnRightButtonClick()
+    public void OnRightButtonClick() //오른쪽 캐릭터 정보로 이동
     {
-        if (currentIndex < characterList.Count -1) // 오른쪽에 캐릭터가 있는지 확인
+        if (currentIndex < characterList.Count - 1) // 오른쪽에 캐릭터가 있는지 확인
         {
             currentIndex++;
         }
@@ -197,45 +235,7 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
         SetCharacterInfo(characterList, currentIndex);
     }
 
-
-    private void OnLevelUp()
-    {
-        //스텟Up
-        characterInfo.Level++;
-        characterInfo.AttackPower += 1;
-        characterInfo.Defense += 1;
-        characterInfo.Health += 10;
-
-        //스텟 텍스트 초기화
-        LevelText.text = characterInfo.Level.ToString();
-        CombatPowerText.text = characterInfo.CombatPower.ToString();
-        AttackPowerText.text = characterInfo.AttackPower.ToString();
-        HealthText.text = characterInfo.Health.ToString();
-        DefenseText.text = characterInfo.Defense.ToString();
-        AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
-
-        EventManager.UserInfoUpdated();
-    }
-
-    public void OnLevelUpButtonClick()
-    {
-      //MyInfo에서 차감
-      //저장
-       if(DataModel.instance.myInfo.Gold>= int.Parse(NeededGold.text) && DataModel.instance.myInfo.Exp >= int.Parse(NeededExp.text))
-        {
-            DataModel.instance.myInfo.Gold -= int.Parse(NeededGold.text);
-            DataModel.instance.myInfo.Exp -= int.Parse(NeededExp.text);
-
-            OnLevelUp();
-            DataModel.instance.OnSaveRequested?.Invoke();
-
-        }
-        else
-        {
-            Debug.Log("Gold or Exp is not enough");
-        }
-    }
-    public void ToKnightsView()
+    public void ToKnightsView() //KnightsVIew로 이동
     {
         var knightsView = UiPool.GetObject("KnightsView");
         knightsView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;

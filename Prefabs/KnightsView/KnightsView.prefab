@@ -16222,10 +16222,10 @@ MonoBehaviour:
   - {fileID: 8684183630908740291}
   - {fileID: 3151417305831369649}
   - {fileID: 8267118314760123122}
-  GradeButton: {fileID: 7487644737460816522}
-  GradeButtonImage: {fileID: 852028780591842941}
-  LevelButton: {fileID: 6016162805181673435}
-  LevelButtonImage: {fileID: 4612295628945230846}
+  GradeSortButton: {fileID: 7487644737460816522}
+  GradeSortButtonImage: {fileID: 852028780591842941}
+  LevelSortButton: {fileID: 6016162805181673435}
+  LevelSortButtonImage: {fileID: 4612295628945230846}
   ElementAllButton: {fileID: 1688359724478266992}
   ElementAllButtonImages: {fileID: 1950091200335435269}
   ElementButtons:
