@@ -128,20 +128,41 @@ public class KnightsView : MonoBehaviour, IKnightsView
         {
             var characterData = CharacterList[i];
             Slot[i].SetActive(true);
-            Slot[i].transform.GetChild(0).GetComponent<Text>().text = characterData.Name;
-            Slot[i].transform.GetChild(2).GetComponent<Text>().text = characterData.Level.ToString();
-            Slot[i].transform.GetChild(3).GetComponent<Image>().sprite = characterData.ElementSprite;
-            Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = characterData.JobSprite;
+            Slot[i].transform.GetChild(1).GetComponent<Text>().text = characterData.Name; //캐릭터 이름
+            Slot[i].transform.GetChild(3).GetComponent<Text>().text = characterData.Level.ToString(); //캐릭터 레벨
+            Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = characterData.ElementSprite; //캐릭터 속성
+            Slot[i].transform.GetChild(5).GetComponent<Image>().sprite = characterData.JobSprite; //캐릭터 직업
 
-            var weaponImage = Slot[i].transform.GetChild(5).GetComponent<Image>(); 
+            var weaponImage = Slot[i].transform.GetChild(6).GetComponent<Image>();  //캐릭터 장착 무기
             weaponImage.sprite = characterData.WeaponSprite;
             weaponImage.color = weaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
-            var armorImage = Slot[i].transform.GetChild(6).GetComponent<Image>();
+            var armorImage = Slot[i].transform.GetChild(7).GetComponent<Image>(); //캐릭터 장착 방어구
             armorImage.sprite = characterData.ArmorSprite;
             armorImage.color = armorImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 
-            var gradeParent = Slot[i].transform.GetChild(8); // Grade 오브젝트 접근
+            //캐릭터 Grade에 따른 BackGround색 결정
+            Image imageComponent = Slot[i].transform.GetChild(0).GetChild(0).GetComponent<Image>();
+            switch (characterData.Grade)
+            {
+                case 1:
+                    // 회색
+                    imageComponent.color = new Color(91f / 255f, 90f / 255f, 100f / 255f, 110f / 255f);
+                    break;
+                case 2:
+                    // 파란색
+                    imageComponent.color = new Color(36f / 255f, 55f / 255f, 189f / 255f, 110f / 255f);
+                    break;
+                case 3:
+                    // 보라색
+                    imageComponent.color = new Color(140f / 255f, 34f / 255f, 145f / 255f, 110f / 255f);
+                    break;
+                default:
+                    break;
+            }
+
+            //캐릭터 Grade에 따라 별 개수 나타냄
+            var gradeParent = Slot[i].transform.GetChild(9); // Grade 오브젝트 접근
             for (int g = 0; g < gradeParent.childCount; g++)
             {
                 var gradeImage = gradeParent.GetChild(g).GetComponent<Image>();
