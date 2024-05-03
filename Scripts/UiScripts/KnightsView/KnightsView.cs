@@ -178,14 +178,6 @@ public class KnightsView : MonoBehaviour, IKnightsView
         
 
     }
-    private void ToCharacterInfoView(List<Character> characterList, int currentIndex)
-    {
-        var characterInfoView = UiPool.GetObject("CharacterInfoView");
-        characterInfoView.GetComponent<CharacterInfoView>().SetCharacterInfo(characterList, currentIndex);
-        characterInfoView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        characterInfoView.GetComponent<CharacterInfoView>().initialize();
-        UiPool.ReturnObject(gameObject);
-    }
 
 
     // 버튼의 밝기를 토글하는 메서드
@@ -310,6 +302,16 @@ public class KnightsView : MonoBehaviour, IKnightsView
         // 필터 적용
         knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
     }
+
+    public void ToCharacterInfoView(List<Character> characterList, int currentIndex)
+    {
+        var characterInfoView = UiPool.GetObject("CharacterInfoView");
+        characterInfoView.GetComponent<CharacterInfoView>().SetCharacterInfo(characterList, currentIndex);
+        characterInfoView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        characterInfoView.GetComponent<CharacterInfoView>().initialize();
+        UiPool.ReturnObject(gameObject);
+    }
+
     public void OnExitButtonClick()
     {
 

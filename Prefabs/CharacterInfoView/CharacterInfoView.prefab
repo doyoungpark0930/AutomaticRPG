@@ -4028,6 +4028,8 @@ MonoBehaviour:
   JobImage: {fileID: 3800797436979109202}
   WeaponImage: {fileID: 4748986269754711279}
   ArmorImage: {fileID: 288802232537997106}
+  WeaponButton: {fileID: 3528947120180170827}
+  ArmorButton: {fileID: 2353419426952892557}
   LevelText: {fileID: 890318239236195716}
   CombatPowerText: {fileID: 5049933191221184450}
   AttackPowerText: {fileID: 176025108953346276}

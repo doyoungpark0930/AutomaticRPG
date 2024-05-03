@@ -30,6 +30,8 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     [SerializeField] Image JobImage;
     [SerializeField] Image WeaponImage;
     [SerializeField] Image ArmorImage;
+    [SerializeField] Button WeaponButton;
+    [SerializeField] Button ArmorButton;
 
     //CharacterStats
     [SerializeField] Text LevelText;
@@ -57,6 +59,7 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
         LeftButton.onClick.AddListener(OnLeftButtonClick);
         RightButton.onClick.AddListener(OnRightButtonClick);
         LevelUpButton.onClick.AddListener(characterInfoPresenter.OnLevelUpButtonClick);
+        WeaponButton.onClick.AddListener(ToEquipmentView);
 
     }
 
@@ -245,4 +248,13 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
 
     }
 
+    public void ToEquipmentView()
+    {
+        var equipmentView = UiPool.GetObject("EquipmentView");
+        equipmentView.GetComponent<CharacterInfoView>().SetCharacterInfo(characterList, currentIndex);
+        equipmentView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        equipmentView.GetComponent<EquipmentView>().initialize();
+
+        UiPool.ReturnObject(gameObject);
+    }
 }
