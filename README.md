@@ -1,3 +1,6 @@
+Unity Version : 2022.3.20f1
+Build환경 : Android
+
 오브젝트풀링 사용. => 다중오브젝트풀링(한번 클릭 시 탐색을 해야하므로 List,Queue,Stack보다는 dictionary사용)
 UI를 오브젝트 풀링으로 관리하는이유.
 1. UI창들을 프리팹화해서 관리하기 위함(하이어라키에서 관리하면 협업 관리가 힘들어짐)
@@ -33,4 +36,6 @@ mvp패턴 적용(모델,뷰 의존성 제거 및 코드 관리 편리하게)
 )
 
 DataModel의 Save()메서드를 직접적으로 외부에서 사용하지 못하게, Delegate와 Event를 사용하여 메서드를 외부에 간접적으로 노출.
+
+DataList의 Character와 Weapon관계에서 json파일 변환시 순환참조를 방지하기 위해 각각 고유키 할당.
 
