@@ -53,6 +53,13 @@ public class KnightsView : MonoBehaviour, IKnightsView
         knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
         AddEventListener();
     }
+
+    public void initialize() //onEnable대체
+    {
+        cameraDrag.enabled = false; //카메라 Drag Off
+        knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
+    }
+
     private void AddEventListener()
     {
 
@@ -107,12 +114,6 @@ public class KnightsView : MonoBehaviour, IKnightsView
             ToggleButtonBrightness(GradeSortButtonImage, ref GradeSortBright);
 
         });
-    }
-
-    public void initialize() //onEnable대체
-    {
-        cameraDrag.enabled = false; //카메라 Drag Off
-        knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
     }
 
 

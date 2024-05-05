@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class AllDatabase   //json직렬화를 위해 클래스 따로 형성
 {
@@ -78,7 +79,7 @@ public class Character
         get { return equippedWeapon; }
         set //Job에 해당하는 무기만 장착 가능
         {
-            if (IsWeaponValidForJob(value.Type, job))
+            if (value == null || IsWeaponValidForJob(value.Type, job))
             {
                 equippedWeapon = value;
             }
@@ -94,6 +95,45 @@ public class Character
     public Element Element { get { return element; } }
     public Skill Skill;
 
+
+    public int BaseAttackPower;
+
+    // 총 공격력은 기본 공격력 + 무기 데미지
+    public int TotalAttackPower
+    {
+        get 
+        { 
+            return BaseAttackPower + ((equippedWeapon != null && equippedWeapon.Name != "") ? equippedWeapon.Damage : 0) 
+                + ((EquippedArmor != null && EquippedArmor.Name != "") ? EquippedArmor.Damage : 0); 
+        }
+    }
+
+    public int Health;
+    public int Defense;
+    public float AttackSpeed = 1.0f;
+    public float CombatPower
+    {
+        get
+        {
+            return (TotalAttackPower * 2 + Defense * 1 + Health * 0.1f) * AttackSpeed;
+        }
+    }
+    public Character(string name, string level, string grade, string job, string element, string skill,
+                     string attackPower, string health, string defense)
+    {
+        this.name = name;
+        this.Level = int.Parse(level);
+        this.Grade = int.Parse(grade);
+        this.job = (JobType)Enum.Parse(typeof(JobType), job);
+        this.element = (Element)Enum.Parse(typeof(Element), element);
+        this.Skill = new Skill(skill);
+        this.BaseAttackPower = int.Parse(attackPower);
+        this.Health = int.Parse(health);
+        this.Defense = int.Parse(defense);
+    }
+
+   
+
     private bool IsWeaponValidForJob(WeaponType weaponType, JobType jobType)
     {
         switch (jobType)
@@ -108,30 +148,6 @@ public class Character
                 return false;
         }
     }
-    public int AttackPower;
-    public int Health;
-    public int Defense;
-    public float AttackSpeed = 1.0f;
-    public float CombatPower
-    {
-        get
-        {
-            return (AttackPower * 2 + Defense * 1 + Health * 0.1f) * AttackSpeed;
-        }
-    }
-    public Character(string name, string level, string grade, string job, string element, string skill,
-                     string attackPower, string health, string defense)
-    {
-        this.name = name;
-        this.Level = int.Parse(level);
-        this.Grade = int.Parse(grade);
-        this.job = (JobType)Enum.Parse(typeof(JobType), job);
-        this.element = (Element)Enum.Parse(typeof(Element), element);
-        this.Skill = new Skill(skill);
-        this.AttackPower = int.Parse(attackPower);
-        this.Health = int.Parse(health);
-        this.Defense = int.Parse(defense);
-    }
 }
 
 
@@ -144,6 +160,11 @@ public class Weapon
     private WeaponType type;
     public WeaponType Type { get { return type; } }
     public int Damage;
+    public int Defense = 0;
+    public int Health = 0;
+    public int Speed = 0;
+
+    public string EquippedCharacterName = "";
 
     public Weapon(string name, string weapontype, string damage)
     {
@@ -159,6 +180,8 @@ public class Armor
 {
     public string Name;
     public int Defense;
+    public int Damage = 0;
+    public int Health = 0;
 
     public Armor(string name, string defense)
     {

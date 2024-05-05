@@ -118,7 +118,7 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
 
         //캐릭터 스텟 업데이트
         CombatPowerText.text = characterInfo.CombatPower.ToString();
-        AttackPowerText.text = characterInfo.AttackPower.ToString();
+        AttackPowerText.text = characterInfo.TotalAttackPower.ToString();
         HealthText.text = characterInfo.Health.ToString();
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
@@ -198,14 +198,14 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     {
         //레벨 1업당 스텟 상승
         characterInfo.Level++;
-        characterInfo.AttackPower += 1;
+        characterInfo.BaseAttackPower += 1; //이렇게하면안됨.AttackPower구할 때 다합산한 값이 나와버림
         characterInfo.Defense += 1;
         characterInfo.Health += 10;
 
         //스텟 텍스트 초기화
         LevelText.text = characterInfo.Level.ToString();
         CombatPowerText.text = characterInfo.CombatPower.ToString();
-        AttackPowerText.text = characterInfo.AttackPower.ToString();
+        AttackPowerText.text = characterInfo.TotalAttackPower.ToString();
         HealthText.text = characterInfo.Health.ToString();
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
@@ -251,7 +251,7 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     public void ToEquipmentView()
     {
         var equipmentView = UiPool.GetObject("EquipmentView");
-        equipmentView.GetComponent<CharacterInfoView>().SetCharacterInfo(characterList, currentIndex);
+        equipmentView.GetComponent<EquipmentView>().SetCharacterInfo(characterList, currentIndex);
         equipmentView.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         equipmentView.GetComponent<EquipmentView>().initialize();
 

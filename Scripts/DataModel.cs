@@ -83,7 +83,6 @@ public class DataModel : MonoBehaviour
 
         Load();
         //Save();
-
     }
 
 
@@ -98,17 +97,15 @@ public class DataModel : MonoBehaviour
         MyCharacterList[1].EquippedArmor = MyArmorList[1];
         var rand = new System.Random();
 
+        
+
         for (int i = 0; i < MyCharacterList.Count; i++)
         {
             MyCharacterList[i].Level = rand.Next(1, 101);  // Random level between 1 and 100
         }
 
 
-        for (int i = 0; i < MyCharacterList.Count; i++)
-        {
-            MyCharacterList[i].Grade = rand.Next(1, 4);  // Random level between 1 and 100
-        }
-
+  
         allDatabase.myInfo = new MyInfo();
         allDatabase.myInfo.nickName = "µµ¿µ";
         allDatabase.myInfo.Progress = "1-1";
@@ -121,9 +118,11 @@ public class DataModel : MonoBehaviour
 
 
         //allDatabase.allCharacter = allCharacterList;
-        allDatabase.allCharacter = MyCharacterList;
         //allDatabase.allWeapon = allWeaponList;
+
+        allDatabase.allCharacter = MyCharacterList;
         allDatabase.allWeapon = MyWeaponList;
+
         //allDatabase.allArmor = allArmorList;
         allDatabase.allArmor = MyArmorList;
         allDatabase.myInfo = myInfo;
