@@ -30,6 +30,7 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     [SerializeField] Image JobImage;
     [SerializeField] Image WeaponImage;
     [SerializeField] Image ArmorImage;
+    [SerializeField] Image CharacterImage;
     [SerializeField] Button WeaponButton;
     [SerializeField] Button ArmorButton;
 
@@ -109,7 +110,9 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
         NameText.text = characterInfo.Name;
         LevelText.text = characterInfo.Level.ToString();
 
-        //무기 이미지와 방어구 이미지 업데이트
+        //이미지 업데이트
+        CharacterImage.sprite = infodata.CharacterSprite;
+
         WeaponImage.sprite = infodata.WeaponSprite;
         WeaponImage.color = WeaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
 

@@ -11,6 +11,7 @@ namespace CharacterInfoUI
         public Sprite ArmorSprite;
         public Sprite JobSprite;
         public Sprite ElementSprite;
+        public Sprite CharacterSprite;
         public string JobName;
         public string ElementName;
 
@@ -35,6 +36,7 @@ namespace CharacterInfoUI
             //Character가 장착하고있는 무기 및 방어구 스프라이트 할당
             infoData.WeaponSprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => character.EquippedWeapon != null && sprite.name == character.EquippedWeapon.Name);
             infoData.ArmorSprite = DataModel.instance.ArmorSprite.FirstOrDefault(sprite => character.EquippedArmor != null && sprite.name == character.EquippedArmor.Name);
+            infoData.CharacterSprite = DataModel.instance.CharacterSprite.FirstOrDefault(sprite => sprite.name == character.Name);
 
             //Character직업과 속성에 맞게 이름과 직업,속성 스프라이트 할당
             switch (character.Job)

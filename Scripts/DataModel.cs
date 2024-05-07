@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Linq;
 
 
 public class DataModel : MonoBehaviour
@@ -33,6 +34,7 @@ public class DataModel : MonoBehaviour
 
 
 
+    public Sprite[] CharacterSprite;
     public Sprite[] JobSprite;
     public Sprite[] WeaponSprite;
     public Sprite[] ArmorSprite;
@@ -143,12 +145,21 @@ public class DataModel : MonoBehaviour
 
         LoadSprites();
 
+        ReconnectEquipmentReferences();
+
     }
 
 
     //메모리 효율성을 위해, My..List의 리소스들만 메모리에 올리고 필요한 스프라이트는 필요할 때 따로 올린다.
     void LoadSprites()
     {
+        // 캐릭터 스프라이트 로드
+        CharacterSprite = new Sprite[MyCharacterList.Count];
+        for (int i = 0; i < MyCharacterList.Count; i++)
+        {
+            CharacterSprite[i] = Resources.Load<Sprite>("Character/" + MyCharacterList[i].Name);
+        }
+
         // 무기 스프라이트 로드
         WeaponSprite = new Sprite[MyWeaponList.Count];
         for (int i = 0; i < MyWeaponList.Count; i++)
@@ -177,6 +188,43 @@ public class DataModel : MonoBehaviour
             ElementSprite[i] = Resources.Load<Sprite>("Element/" + ((Element)i).ToString());
         }
     }
+
+    // MyCharacterList의 각 요소가 해당 MyWeaponList의 요소를 참조
+    void ReconnectEquipmentReferences()
+    {
+
+        foreach (var character in MyCharacterList)
+        {
+            //무기 참조
+            if (character.EquippedWeapon != null && character.EquippedWeapon.Name != "")
+            {
+                Weapon foundWeapon = MyWeaponList.FirstOrDefault(weapon => weapon.Name == character.EquippedWeapon.Name);
+                if (foundWeapon != null)
+                {
+                    character.EquippedWeapon = foundWeapon;
+                }
+                else
+                {
+                    Debug.LogError("Weapon named " + character.EquippedWeapon.Name + " not found in MyWeaponList.");
+                }
+            }
+
+            //방어구 참조
+            if (character.EquippedArmor != null && character.EquippedArmor.Name != "")
+            {
+                Armor foundArmor = MyArmorList.FirstOrDefault(armor => armor.Name == character.EquippedArmor.Name);
+                if (foundArmor != null)
+                {
+                    character.EquippedArmor = foundArmor;
+                }
+                else
+                {
+                    Debug.LogError("Armor named " + character.EquippedArmor.Name + " not found in MyArmorList.");
+                }
+            }
+        }
+    }
+
 }
 
 

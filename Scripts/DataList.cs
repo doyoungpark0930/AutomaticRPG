@@ -155,10 +155,13 @@ public class Character
 [System.Serializable]
 public class Weapon
 {
-    public string Name;
+    [SerializeField] 
+    private string name;
+    public string Name { get { return name; } }
     [SerializeField]
     private WeaponType type;
     public WeaponType Type { get { return type; } }
+    public int Level = 1;
     public int Damage;
     public int Defense = 0;
     public int Health = 0;
@@ -168,7 +171,7 @@ public class Weapon
 
     public Weapon(string name, string weapontype, string damage)
     {
-        this.Name = name;
+        this.name = name;
         this.type = (WeaponType)Enum.Parse(typeof(WeaponType), weapontype);
         this.Damage = int.Parse(damage);
     }

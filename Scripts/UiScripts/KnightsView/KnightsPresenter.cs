@@ -14,6 +14,7 @@ namespace KnightsUI
         public Sprite JobSprite;
         public Sprite WeaponSprite;
         public Sprite ArmorSprite;
+        public Sprite CharacterSprite;
         public int Grade;
     }
     public class KnightsPresenter
@@ -82,6 +83,7 @@ namespace KnightsUI
                     JobSprite = DataModel.instance.JobSprite.FirstOrDefault(sprite => sprite.name == character.Job.ToString()),
                     WeaponSprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => character.EquippedWeapon != null && sprite.name == character.EquippedWeapon.Name),
                     ArmorSprite = DataModel.instance.ArmorSprite.FirstOrDefault(sprite => character.EquippedArmor != null && sprite.name == character.EquippedArmor.Name) ,
+                    CharacterSprite = DataModel.instance.CharacterSprite.FirstOrDefault(sprite => sprite.name == character.Name),
                     Grade = character.Grade
                 }).ToList();
 

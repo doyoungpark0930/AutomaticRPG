@@ -133,6 +133,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
             Slot[i].transform.GetChild(3).GetComponent<Text>().text = characterData.Level.ToString(); //캐릭터 레벨
             Slot[i].transform.GetChild(4).GetComponent<Image>().sprite = characterData.ElementSprite; //캐릭터 속성
             Slot[i].transform.GetChild(5).GetComponent<Image>().sprite = characterData.JobSprite; //캐릭터 직업
+            Slot[i].transform.GetChild(8).GetComponent<Image>().sprite = characterData.CharacterSprite; //캐릭터 이미지
 
             var weaponImage = Slot[i].transform.GetChild(6).GetComponent<Image>();  //캐릭터 장착 무기
             weaponImage.sprite = characterData.WeaponSprite;

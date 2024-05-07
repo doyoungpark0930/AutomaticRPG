@@ -3227,7 +3227,7 @@ GameObject:
   - component: {fileID: 1999266342704857958}
   - component: {fileID: 4165691410777067941}
   m_Layer: 5
-  m_Name: Image (5)
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4028,6 +4028,7 @@ MonoBehaviour:
   JobImage: {fileID: 3800797436979109202}
   WeaponImage: {fileID: 4748986269754711279}
   ArmorImage: {fileID: 288802232537997106}
+  CharacterImage: {fileID: 4165691410777067941}
   WeaponButton: {fileID: 3528947120180170827}
   ArmorButton: {fileID: 2353419426952892557}
   LevelText: {fileID: 890318239236195716}
