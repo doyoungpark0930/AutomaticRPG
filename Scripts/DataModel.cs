@@ -85,6 +85,7 @@ public class DataModel : MonoBehaviour
 
         Load();
         //Save();
+        ReconnectEquipmentReferences();
     }
 
 
@@ -116,6 +117,7 @@ public class DataModel : MonoBehaviour
         allDatabase.myInfo.Gold = 3000;
         */
 
+     
 
 
 
@@ -144,8 +146,6 @@ public class DataModel : MonoBehaviour
         MyArmorList = allDatabase.allArmor;
 
         LoadSprites();
-
-        ReconnectEquipmentReferences();
 
     }
 

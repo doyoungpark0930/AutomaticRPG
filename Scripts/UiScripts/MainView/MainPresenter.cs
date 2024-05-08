@@ -8,15 +8,16 @@ namespace MainUI
     public class MainPresenter
     {
         IMainView mainView;
-
+        MyInfo myInfo;
         public MainPresenter(IMainView view)
         {
             mainView = view;
-            EventManager.OnUserInfoUpdated += mainView.MainViewMyInfoUpdate;
         }
-        public void UserInfoUpdate()
+
+        public MyInfo GetMyInfo()
         {
-            EventManager.UserInfoUpdated(DataModel.instance.myInfo);
+            myInfo = DataModel.instance.myInfo;
+            return myInfo;
         }
     }
 }

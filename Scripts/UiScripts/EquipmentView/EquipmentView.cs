@@ -1,40 +1,101 @@
-using KnightsUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using EquipmentUI;
 
-public class EquipmentView : MonoBehaviour
+
+public class EquipmentView : MonoBehaviour, IEquipmentView
 {
+    EquipmentPresenter equipmentPresenter;
+
     private List<Character> characterList;
     private Character characterInfo;
     private int currentIndex;
     private List<Weapon> weaponList;
 
+    private MyInfo myInfo;
+
     [SerializeField] GameObject[] Slot;
 
-    [SerializeField] Text EquipmentNameText;
+    //장비 정보
+    [SerializeField] Text EquipmentName;
     [SerializeField] Text EquipmentLevel;
     [SerializeField] Image EquipmentImage;
+
+    //장비 장착 정보
     [SerializeField] GameObject EquipButton;
     [SerializeField] GameObject EquippedCharacterName;
+
+    //무기연마 정보
+    [SerializeField] Text ReinforceLevel;
     [SerializeField] Text CurrentReinforce;
+
+    //장비 스텟 정보
     [SerializeField] Text CurrentAttackPower;
-    [SerializeField] Text NextAttackPower;
     [SerializeField] Text CurrentHealth;
-    [SerializeField] Text NextHealth;
-    [SerializeField] Button BreakButton;
-    [SerializeField] Text BreakReward; //레벨*얼마만큼의 빵
+
+    //장비 분해 정보
+    [SerializeField] GameObject EquipmentBreakButton;
+    [SerializeField] Text BreakRewardedGold;
+    [SerializeField] Text BreakRewardedBread;
+
     [SerializeField] GameObject LevelUpButton;
     [SerializeField] GameObject ReinforceButton;
     [SerializeField] GameObject NotSelectedImage;
+
+    //MyInfo
+    [SerializeField] Text Gold;
+    [SerializeField] Text Bread;
+
+    //장비 LevelUp에 요구되는 Gold와 Bread
+    [SerializeField] Text NeededGold;
+    [SerializeField] Text NeededBread;
+
+    //무기연마에 요구되는 Bread
+    [SerializeField] Text ReinforceNeededBread;
+
+
+    private void Awake()
+    {
+        equipmentPresenter = new EquipmentPresenter(this);
+        myInfo = equipmentPresenter.GetMyInfo();
+        EventManager.OnUserInfoUpdated += EquipmentViewMyInfoUpdate;
+    }
+    public void EquipmentViewMyInfoUpdate(MyInfo myInfo)
+    {
+        Gold.text = myInfo.Gold.ToString();
+        Bread.text = myInfo.Bread.ToString();
+
+    }
+
+    public void SetCharacterInfo(List<Character> characterList, int index)
+    {
+        if (index < 0 || index >= characterList.Count)
+        {
+            Debug.LogError("Invalid character index");
+            return;
+        }
+        this.characterList = characterList;
+        this.characterInfo = characterList[index];
+        this.currentIndex = index;
+
+        equipmentPresenter.FilterWeaponsByJobAndSlotUpdate(characterInfo.Job);
+    }
+
     public void initialize()
     {
-        //현재 캐릭터가 장착한 무기가 있다면, 해당 무기의 정보를 띄운다
-        if (characterInfo.EquippedWeapon!=null && characterInfo.EquippedWeapon.Name != "") 
+        UpdateSlotClickStatus();
+        EventManager.UserInfoUpdated(myInfo);
+    }
+
+ 
+    //현재 캐릭터가 장착한 무기가 있다면, 해당 무기의 정보를 띄우는 메서드
+    private void UpdateSlotClickStatus()
+    {
+        if (characterInfo.EquippedWeapon != null && characterInfo.EquippedWeapon.Name != "")
         {
             // weaponList에서 현재 장착한 무기의 인덱스를 찾기
             int equippedWeaponIndex = weaponList.FindIndex(weapon => weapon.Name == characterInfo.EquippedWeapon.Name);
@@ -62,48 +123,10 @@ public class EquipmentView : MonoBehaviour
 
     }
 
-    public void SetCharacterInfo(List<Character> characterList, int index)
+    public void SlotUpdate(List<Weapon> weaponList) //Slot에 이미지들을 넣는다
     {
-        if (index < 0 || index >= characterList.Count)
-        {
-            Debug.LogError("Invalid character index");
-            return;
-        }
-        this.characterList = characterList;
-        this.characterInfo = characterList[index];
-        this.currentIndex = index;
+        this.weaponList = weaponList;
 
-        FilterWeaponsByJob(characterInfo.Job);
-        InitialSlotUpdate();
-    }
-
-
-    private void FilterWeaponsByJob(JobType jobType)
-    {
-        WeaponType requiredType;
-        switch (jobType)
-        {
-            case JobType.Warrior:
-                requiredType = WeaponType.Sword;
-                break;
-            case JobType.Mage:
-                requiredType = WeaponType.Staff;
-                break;
-            case JobType.Archer:
-                requiredType = WeaponType.Bow;
-                break;
-            default:
-                Debug.LogError("Unknown job type: " + jobType);
-                return;
-        }
-
-        weaponList = DataModel.instance.MyWeaponList
-                     .Where(weapon => weapon.Type == requiredType)
-                     .ToList();
-    }
-
-    public void InitialSlotUpdate() //Slot에 이미지들을 넣는다
-    {
         foreach (GameObject slot in Slot)
         {
             slot.SetActive(false);
@@ -124,17 +147,17 @@ public class EquipmentView : MonoBehaviour
             );
             
         }
-        SlotImageUpdate();
+        equipmentPresenter.SlotImageUpdate(weaponList);
 
     }
-    private void SlotImageUpdate()
+    public void SlotDataUpdate(List<SlotData> slotData)
     {
         for (int i = 0; i < weaponList.Count; i++)
         {
-            Slot[i].transform.GetChild(2).GetComponent<Image>().sprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == weaponList[i].Name);
-
+            Slot[i].transform.GetChild(2).GetComponent<Image>().sprite = slotData[i].EquipmentSprite;
+            Slot[i].transform.GetChild(3).GetComponent<Text>().text = slotData[i].EquipmentLevel.ToString();
             var characterImage = Slot[i].transform.GetChild(4).GetComponent<Image>();
-            characterImage.sprite = DataModel.instance.CharacterSprite.FirstOrDefault(sprite => sprite.name == weaponList[i].EquippedCharacterName);
+            characterImage.sprite = slotData[i].CharacterSprite;
             characterImage.color = characterImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
         }
 
@@ -153,29 +176,149 @@ public class EquipmentView : MonoBehaviour
         }
         Slot[index].transform.GetChild(0).gameObject.SetActive(true);
 
+        //장비 스텟창 초기화
+        equipmentPresenter.UpdateEquipmentStats(weapon);
+
+
+        //장착버튼에 장착할 무기 할당
+        LevelUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        LevelUpButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            equipmentPresenter.OnLevelUpButtonClick(weapon);
+        }
+        );
+
+        //장비분해 버튼에 무기 할당
+        EquipmentBreakButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        EquipmentBreakButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            equipmentPresenter.OnBreakButtonClick(weapon);
+        }
+        );
+
+        //무기연마 버튼에 무기 할당
+        ReinforceButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        ReinforceButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            equipmentPresenter.OnReinforceButtonClick(weapon);
+        }
+        );
+
+        equipmentPresenter.UpdateEquipStatus(weapon);
+
+    }
+    public void UpdateStats(Weapon weapon, Sprite equipmentSprite)
+    {
         //장비 스텟 초기화
-        EquipmentNameText.text = weapon.Name;
+        EquipmentName.text = weapon.Name;
         EquipmentLevel.text = weapon.Level.ToString();
-        EquipmentImage.sprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => sprite.name == weapon.Name);
+        EquipmentImage.sprite = equipmentSprite;
+        ReinforceLevel.text = weapon.ReinforceLevel.ToString();
         CurrentReinforce.text = weapon.Defense.ToString();
         CurrentAttackPower.text = weapon.Damage.ToString();
         CurrentHealth.text = weapon.Health.ToString();
 
-        
-        UpdateEquipButton(weapon);
+        //장비 레벨업 버튼 초기화
+        NeededGold.text = (150 + weapon.Level * 15).ToString();
+        NeededBread.text = ((weapon.Level / 10 + 1) * 14).ToString();
+
+        //장비 분해 보상 초기화(장비의 총 사용한 재화의 0.7배)
+        int totalGoldNeeded = 0;
+        int totalBreadNeeded = 0;
+        for (int level = 1; level <= weapon.Level; level++)
+        {
+            totalGoldNeeded += 150 + (level * 15);
+            totalBreadNeeded += ((level / 10) + 1) * 14;
+        }
+        //분해로 보상될 재화 초기화
+        BreakRewardedGold.text = ((int)(totalGoldNeeded * 0.7f)).ToString();
+        BreakRewardedBread.text = ((int)(totalBreadNeeded * 0.7f)).ToString();
+
+        //무기연마에 필요한 재화 초기화
+        ReinforceNeededBread.text = (weapon.ReinforceLevel * 100).ToString();
+    }
+
+    public void LevelUp(Weapon weapon, MyInfo myInfo)
+    {
+        if (myInfo.Gold >= int.Parse(NeededGold.text) && myInfo.Bread >= int.Parse(NeededBread.text)) //레벨 업당 Gold와 Bread가 충분하다면
+        {
+            myInfo.Gold -= int.Parse(NeededGold.text);
+            myInfo.Bread -= int.Parse(NeededBread.text);
+
+            //장비 레벨 1업당 스텟 상승
+            weapon.Level += 1;
+            weapon.Damage += 1;
+            weapon.Health += 5;
+
+            //장비 스텟 창 초기화
+            equipmentPresenter.UpdateEquipmentStats(weapon);
+
+            equipmentPresenter.SlotImageUpdate(weaponList);
+
+            EventManager.UserInfoUpdated(myInfo);
+
+        }
+        else
+        {
+            Debug.Log("Gold or Bread is not enough");
+        }
+    }
+
+    public void BreakEquipment()
+    {
+        myInfo.Gold += int.Parse(BreakRewardedGold.text);
+        myInfo.Bread += int.Parse(BreakRewardedBread.text);
+
+        //weaponList 재할당 및 슬롯업데이트
+        equipmentPresenter.FilterWeaponsByJobAndSlotUpdate(characterInfo.Job);
+     
+        //캐릭터 장비 장착 여부에 따른 Slot클릭 상태
+        UpdateSlotClickStatus();
+
+        EventManager.UserInfoUpdated(myInfo);
+
 
     }
 
-    //캐릭터장착 여부에 따른 장착버튼 업데이트(장착 or 장착해제)
-    private void UpdateEquipButton(Weapon weapon)
+    
+
+   
+
+    public void EquipmentReinforce(Weapon weapon)
+    {
+
+        if (myInfo.Bread >= int.Parse(ReinforceNeededBread.text))
+        {
+            myInfo.Bread -= int.Parse(ReinforceNeededBread.text);
+
+            //장비의 무기연마 레벨 및 스텟 상승
+            weapon.ReinforceLevel += 1;
+            weapon.Defense += 1;
+
+            //장비 스텟 창 초기화
+            equipmentPresenter.UpdateEquipmentStats(weapon);
+
+            EventManager.UserInfoUpdated(myInfo);
+        }
+        else
+        {
+            Debug.Log("Bread is not enough");
+        }
+
+       
+    }
+
+
+
+    //캐릭터장착 여부에 따른 장착상태와 장착버튼 업데이트
+    public void UpdateEquipButtonAndEquipStatus(Weapon weapon, Sprite characterSprite)
     {
         
         if (weapon.EquippedCharacterName != "") //이 장비를 장착한 캐릭터가 있다면
         {
             //장착 캐릭터 정보 활성화 및 캐릭터 이미지.이름 할당
             EquippedCharacterName.SetActive(true);
-            EquippedCharacterName.transform.GetChild(1).GetComponent<Image>().sprite =
-                DataModel.instance.CharacterSprite.FirstOrDefault(sprite => sprite.name == weapon.EquippedCharacterName);
+            EquippedCharacterName.transform.GetChild(1).GetComponent<Image>().sprite = characterSprite;
             EquippedCharacterName.transform.GetChild(2).GetComponent<Text>().text = weapon.EquippedCharacterName;
 
             if (weapon.EquippedCharacterName == characterInfo.Name) //이 장비를 장착한 캐릭터가 현재 캐릭터라면
@@ -265,14 +408,18 @@ public class EquipmentView : MonoBehaviour
         }
 
 
-        SlotImageUpdate();
-        UpdateEquipButton(weapon);
+        equipmentPresenter.SlotImageUpdate(weaponList);
+        equipmentPresenter.UpdateEquipStatus(weapon);
 
 
         DataModel.instance.OnSaveRequested?.Invoke();
 
     }
 
+
+
+
+    
     public void ToCharacterInfoView()
     {
         var characterInfoView = UiPool.GetObject("CharacterInfoView");

@@ -8,7 +8,7 @@ using MainUI;
 public class MainView : MonoBehaviour, IMainView
 {
     MainPresenter mainPresenter;
-
+    private MyInfo myInfo;
     CameraDrag cameraDrag;
     [SerializeField] Text NickName;
     [SerializeField] Text Progress;
@@ -19,11 +19,12 @@ public class MainView : MonoBehaviour, IMainView
     private void Awake()
     {
         mainPresenter = new MainPresenter(this);
-
+        myInfo = mainPresenter.GetMyInfo();
+        EventManager.OnUserInfoUpdated += MainViewMyInfoUpdate;
+        EventManager.UserInfoUpdated(myInfo);
         cameraDrag = Camera.main.GetComponent<CameraDrag>();
         NickName.text= DataModel.instance.myInfo.nickName;
-
-        mainPresenter.UserInfoUpdate();
+;
     }
     public void initialize() //OnEnable은 오브젝트 풀에서 첫 생성시 발동 되므로 위험하니 initilize()를 사용한다
     {

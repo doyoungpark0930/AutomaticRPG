@@ -15,6 +15,8 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     private Character characterInfo;
     private int currentIndex;
 
+    private MyInfo myInfo;
+
     [SerializeField] Button LeftButton;
     [SerializeField] Button RightButton;
 
@@ -56,6 +58,8 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     private void Awake()
     {
         characterInfoPresenter = new CharacterInfoPresenter(this);
+        myInfo = characterInfoPresenter.GetMyInfo();
+        EventManager.OnUserInfoUpdated += CharacterViewMyInfoUpdate; //userInfo데이터 업데이트 이벤트매니저에 할당
 
         LeftButton.onClick.AddListener(OnLeftButtonClick);
         RightButton.onClick.AddListener(OnRightButtonClick);
@@ -73,9 +77,6 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
     {
         Exp.text = myInfo.Exp.ToString();
         Gold.text = myInfo.Gold.ToString();
-
-        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
-        NeededGold.text = (100 + characterInfo.Level * 10).ToString();
 
     }
 
@@ -126,8 +127,12 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
 
+        //레벨업에 필요한 Exp와 Gold텍스트 초기화
+        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
+        NeededGold.text = (100 + characterInfo.Level * 10).ToString();
+
         //UserInfo 이벤트매니저 구동
-        EventManager.UserInfoUpdated(infodata.myinfo);
+        EventManager.UserInfoUpdated(myInfo);
 
     }
 
@@ -212,6 +217,10 @@ public class CharacterInfoView : MonoBehaviour, ICharacterInfoView
         HealthText.text = characterInfo.Health.ToString();
         DefenseText.text = characterInfo.Defense.ToString();
         AttackSpeedText.text = characterInfo.AttackSpeed.ToString();
+
+        //레벨업에 필요한 Exp와 Gold텍스트 초기화
+        NeededExp.text = ((characterInfo.Level / 10 + 1) * 14).ToString();
+        NeededGold.text = (100 + characterInfo.Level * 10).ToString();
     }
 
     public void OnLeftButtonClick() //왼쪽 캐릭터 정보로 이동

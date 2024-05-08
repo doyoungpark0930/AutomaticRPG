@@ -162,6 +162,7 @@ public class Weapon
     private WeaponType type;
     public WeaponType Type { get { return type; } }
     public int Level = 1;
+    public int ReinforceLevel = 1;
     public int Damage;
     public int Defense = 0;
     public int Health = 0;

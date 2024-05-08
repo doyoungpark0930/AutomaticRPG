@@ -15,23 +15,26 @@ namespace CharacterInfoUI
         public string JobName;
         public string ElementName;
 
-        public MyInfo myinfo;
     }
     public class CharacterInfoPresenter
     {
         ICharacterInfoView characterInfoView;
 
         InfoData infoData = new InfoData();
+        MyInfo myInfo;
+
         public CharacterInfoPresenter(ICharacterInfoView view)
         {
             characterInfoView = view;
-            EventManager.OnUserInfoUpdated += characterInfoView.CharacterViewMyInfoUpdate; //userInfo데이터 업데이트 이벤트매니저에 할당
         }
-
+        public MyInfo GetMyInfo()
+        {
+            myInfo = DataModel.instance.myInfo; //유저 info할당(Gold및 Exp)
+            return myInfo;
+        }
 
         public void UpdateView(Character character)
         {
-            infoData.myinfo = DataModel.instance.myInfo; //유저 info할당(Gold및 Exp)
 
             //Character가 장착하고있는 무기 및 방어구 스프라이트 할당
             infoData.WeaponSprite = DataModel.instance.WeaponSprite.FirstOrDefault(sprite => character.EquippedWeapon != null && sprite.name == character.EquippedWeapon.Name);
