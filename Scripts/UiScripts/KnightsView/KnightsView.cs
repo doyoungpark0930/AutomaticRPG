@@ -13,30 +13,24 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
     [SerializeField] GameObject[] Slot;
 
-    [SerializeField] Button GradeSortButton;
-    [SerializeField] Image GradeSortButtonImage;
+    [SerializeField] GameObject GradeSortButton;
     private bool GradeSortBright = false;
 
-    [SerializeField] Button LevelSortButton;
-    [SerializeField] Image LevelSortButtonImage;
+    [SerializeField] GameObject LevelSortButton;
     private bool LevelSortBright = false;
 
     // 속성 버튼과 이미지 배열 정의
-    [SerializeField] private Button ElementAllButton;
-    [SerializeField] private Image ElementAllButtonImages;
+    [SerializeField] private GameObject ElementAllButton;
     private bool ElementAllButtonBright = true;
 
-    [SerializeField] private Button[] ElementButtons; //Fire, Earth, Water, Wind 순
-    [SerializeField] private Image[] ElementButtonImages;
+    [SerializeField] private GameObject[] ElementButtons; //Fire, Earth, Water, Wind 순
     private bool[] ElementButtonBright = new bool[4]; //false로 4개 배열 초기화
 
     // 직업 버튼과 이미지 배열 정의
-    [SerializeField] private Button JobAllButton;
-    [SerializeField] private Image JobAllButtonImages;
+    [SerializeField] private GameObject JobAllButton;
     private bool JobAllButtonBright = true;
 
-    [SerializeField] private Button[] JobButtons; // Warrior, Mage, Archer 순 
-    [SerializeField] private Image[] JobButtonImages;
+    [SerializeField] private GameObject[] JobButtons; // Warrior, Mage, Archer 순 
     private bool[] JobButtonBright = new bool[3]; //false로 3개 배열 초기화
 
     HashSet<Element> ElementsFilter = new HashSet<Element> { Element.Fire, Element.Earth, Element.Water, Element.Wind };
@@ -63,55 +57,55 @@ public class KnightsView : MonoBehaviour, IKnightsView
     private void AddEventListener()
     {
 
-        ElementAllButton.onClick.AddListener(() =>
+        ElementAllButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             ElementAllButtonBright = !ElementAllButtonBright;
             UpdateElementFilter(true);
-            ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
+            ToggleButtonBrightness(ElementAllButton, ref ElementAllButtonBright);
         });
 
         for (int i = 0; i < ElementButtons.Length; i++)
         {
             int localIndex = i; //람다식 외부 변수 참조 방지용
-            ElementButtons[localIndex].onClick.AddListener(() =>
+            ElementButtons[localIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
                 ElementButtonBright[localIndex] = !ElementButtonBright[localIndex];
                 UpdateElementFilter(false);
-                ToggleButtonBrightness(ElementButtonImages[localIndex], ref ElementButtonBright[localIndex]);
+                ToggleButtonBrightness(ElementButtons[localIndex], ref ElementButtonBright[localIndex]);
             });
         }
 
-        JobAllButton.onClick.AddListener(() =>
+        JobAllButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             JobAllButtonBright = !JobAllButtonBright;
             UpdateJobFilter(true);
-            ToggleButtonBrightness(JobAllButtonImages, ref JobAllButtonBright);
+            ToggleButtonBrightness(JobAllButton, ref JobAllButtonBright);
         });
 
         for (int i = 0; i < JobButtons.Length; i++)
         {
             int localIndex = i; //람다식 외부 변수 참조 방지용
-            JobButtons[localIndex].onClick.AddListener(() =>
+            JobButtons[localIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
                 JobButtonBright[localIndex] = !JobButtonBright[localIndex];
                 UpdateJobFilter(false);
-                ToggleButtonBrightness(JobButtonImages[localIndex], ref JobButtonBright[localIndex]);
+                ToggleButtonBrightness(JobButtons[localIndex], ref JobButtonBright[localIndex]);
             });
         }
 
 
-        LevelSortButton.onClick.AddListener(() =>
+        LevelSortButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             LevelSortBright = !LevelSortBright;
             knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
-            ToggleButtonBrightness(LevelSortButtonImage, ref LevelSortBright);
+            ToggleButtonBrightness(LevelSortButton, ref LevelSortBright);
 
         });
-        GradeSortButton.onClick.AddListener(() =>
+        GradeSortButton.GetComponent<Button>().onClick.AddListener(() =>
         {
             GradeSortBright = !GradeSortBright;
             knightsPresenter.UpdateByFlags(LevelSortBright, GradeSortBright, ElementsFilter, JobsFilter);
-            ToggleButtonBrightness(GradeSortButtonImage, ref GradeSortBright);
+            ToggleButtonBrightness(GradeSortButton, ref GradeSortBright);
 
         });
     }
@@ -135,13 +129,21 @@ public class KnightsView : MonoBehaviour, IKnightsView
             Slot[i].transform.GetChild(5).GetComponent<Image>().sprite = characterData.JobSprite; //캐릭터 직업
             Slot[i].transform.GetChild(8).GetComponent<Image>().sprite = characterData.CharacterSprite; //캐릭터 이미지
 
-            var weaponImage = Slot[i].transform.GetChild(6).GetComponent<Image>();  //캐릭터 장착 무기
-            weaponImage.sprite = characterData.WeaponSprite;
-            weaponImage.color = weaponImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
+            var weaponObject = Slot[i].transform.GetChild(6).gameObject; //캐릭터 장착 무기
+            if (characterData.WeaponSprite != null)
+            {
+                weaponObject.SetActive(true);
+                weaponObject.GetComponent<Image>().sprite = characterData.WeaponSprite;
+            }
+            else weaponObject.SetActive(false);
 
-            var armorImage = Slot[i].transform.GetChild(7).GetComponent<Image>(); //캐릭터 장착 방어구
-            armorImage.sprite = characterData.ArmorSprite;
-            armorImage.color = armorImage.sprite == null ? new Color(1, 1, 1, 0) : Color.white;
+            var armorObject= Slot[i].transform.GetChild(7).gameObject; //캐릭터 장착 방어구
+            if (characterData.ArmorSprite != null)
+            {
+                armorObject.SetActive(true);
+                armorObject.GetComponent<Image>().sprite = characterData.ArmorSprite;
+            }
+            else armorObject.SetActive(false);
 
             //캐릭터 Grade에 따른 BackGround색 결정
             Image imageComponent = Slot[i].transform.GetChild(0).GetChild(0).GetComponent<Image>();
@@ -183,12 +185,27 @@ public class KnightsView : MonoBehaviour, IKnightsView
 
 
     // 버튼의 밝기를 토글하는 메서드
-    private void ToggleButtonBrightness(Image buttonImage, ref bool isBright)
+    private void ToggleButtonBrightness(GameObject button, ref bool isBright)
     {
-        Color currentColor = buttonImage.color;
-        //투명 값 조절
+        Color currentColor = button.GetComponent<Image>().color;
+        //투명 값 및 테두리 조절
+        if(isBright)
+        {
+            //밝게
+            currentColor.a = 1f;
+            //테두리 보이게
+            if (button.transform.childCount > 0) button.transform.GetChild(0).gameObject.SetActive(true);
+            
+        }
+        else
+        {
+            //투명하게
+            currentColor.a = 0.5f;
+            //테두리 안 보이게
+            if (button.transform.childCount > 0) button.transform.GetChild(0).gameObject.SetActive(false);
+        }
         currentColor.a = isBright ? 1f : 0.5f;
-        buttonImage.color = currentColor;
+        button.GetComponent<Image>().color = currentColor;
     }
 
     private void UpdateElementFilter(bool isAllButtonClicked)
@@ -204,7 +221,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
                 ElementButtonBright = new bool[4];
                 for (int i = 0; i < ElementButtonBright.Length; i++)
                 {
-                    ToggleButtonBrightness(ElementButtonImages[i], ref ElementButtonBright[i]);
+                    ToggleButtonBrightness(ElementButtons[i], ref ElementButtonBright[i]);
                 }
             }
             else
@@ -219,7 +236,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
             {
                 //All버튼 어둡게하고, 눌러진 속성 버튼에 맞게 해쉬 값 할당
                 ElementAllButtonBright = false;
-                ToggleButtonBrightness(ElementAllButtonImages, ref ElementAllButtonBright);
+                ToggleButtonBrightness(ElementAllButton, ref ElementAllButtonBright);
                 ElementsFilter.Clear();
                 for (int i = 0; i < ElementButtonBright.Length; i++)
                 {
@@ -261,7 +278,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
                 JobButtonBright = new bool[3];
                 for (int i = 0; i < JobButtonBright.Length; i++)
                 {
-                    ToggleButtonBrightness(JobButtonImages[i], ref JobButtonBright[i]);
+                    ToggleButtonBrightness(JobButtons[i], ref JobButtonBright[i]);
                 }
             }
             else
@@ -276,7 +293,7 @@ public class KnightsView : MonoBehaviour, IKnightsView
             {
                 //All버튼 어둡게하고, 눌러진 직업 버튼에 맞게 해쉬 값 할당
                 JobAllButtonBright = false;
-                ToggleButtonBrightness(JobAllButtonImages, ref JobAllButtonBright);
+                ToggleButtonBrightness(JobAllButton, ref JobAllButtonBright);
                 JobsFilter.Clear();
                 for (int i = 0; i < JobButtonBright.Length; i++)
                 {

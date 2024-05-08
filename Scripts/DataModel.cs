@@ -122,7 +122,7 @@ public class DataModel : MonoBehaviour
 
 
         //allDatabase.allCharacter = allCharacterList;
-        //allDatabase.allWeapon = allWeaponList;
+       // allDatabase.allWeapon = allWeaponList;
 
         allDatabase.allCharacter = MyCharacterList;
         allDatabase.allWeapon = MyWeaponList;
