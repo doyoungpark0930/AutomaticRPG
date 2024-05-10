@@ -93,41 +93,10 @@ public class DataModel : MonoBehaviour
     {
         AllDatabase allDatabase = new AllDatabase();
 
-        /*
-        MyCharacterList[0].EquippedWeapon = MyWeaponList[0];
-        MyCharacterList[0].EquippedArmor = MyArmorList[0];
-        MyCharacterList[2].EquippedWeapon = MyWeaponList[1];
-        MyCharacterList[1].EquippedArmor = MyArmorList[1];
-        var rand = new System.Random();
-
-        
-
-        for (int i = 0; i < MyCharacterList.Count; i++)
-        {
-            MyCharacterList[i].Level = rand.Next(1, 101);  // Random level between 1 and 100
-        }
-
-
-  
-        allDatabase.myInfo = new MyInfo();
-        allDatabase.myInfo.nickName = "도영";
-        allDatabase.myInfo.Progress = "1-1";
-        allDatabase.myInfo.Exp = 1000;
-        allDatabase.myInfo.Bread = 100;
-        allDatabase.myInfo.Gold = 3000;
-        */
-
-     
-
-
-
-        //allDatabase.allCharacter = allCharacterList;
-       // allDatabase.allWeapon = allWeaponList;
-
         allDatabase.allCharacter = MyCharacterList;
         allDatabase.allWeapon = MyWeaponList;
 
-        //allDatabase.allArmor = allArmorList;
+
         allDatabase.allArmor = MyArmorList;
         allDatabase.myInfo = myInfo;
         string jdata = JsonUtility.ToJson(allDatabase); //직렬화
