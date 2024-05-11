@@ -1,3 +1,14 @@
+/*
+ * EquipmentPresenter.cs
+ * 작성자 :박도영
+ * 작성일자: 2024/05/11
+ * 코드 설명 : 장비창 UI의 MVP패턴 중 Presenter에 해당한다. EquipmentView에서 필요한 데이터들을 DataModel로부터 받아 정제하여 전달해준다.
+ *             EquipmentUI 네임스페이스를 활용하여 데이터를 장비창 UI에서만 사용할 수 있게 모듈화하였다.
+ *
+ * email : eofud0930@naver.com
+ * phone : 010-9889-1281
+ *
+ */
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +16,7 @@ using UnityEngine;
 
 namespace EquipmentUI
 {
-    public class SlotData //나중에 이름 바꿔야함
+    public class SlotData 
     {
         public Sprite EquipmentSprite;
         public Sprite CharacterSprite;

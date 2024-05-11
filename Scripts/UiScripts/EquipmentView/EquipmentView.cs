@@ -1,3 +1,14 @@
+/*
+ * EquipmentView.cs
+ * 작성자 :박도영
+ * 작성일자: 2024/05/11
+ * 코드 설명 : 장비창 UI의 MVP방식 중 View에 해당한다.캐릭터 장비 정보 보이기, 장비 옵션 변경 및 장착/해제를 돕는 코드이다. EquipmentPresenter로부터 정제된 데이터를 받는다.
+ *             캐릭터 중복 착용 방지, 무기 장착/해제, 무기 분해, 무기 업그레이드, 무기 연마 기능이 구현되어있다.
+ *
+ * email : eofud0930@naver.com
+ * phone : 010-9889-1281
+ *
+ */
 using System;
 using System.Collections;
 using System.Collections.Generic;

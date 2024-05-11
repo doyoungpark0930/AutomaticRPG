@@ -1,3 +1,15 @@
+/*
+ * KnightsView.cs
+ * 작성자 :박도영
+ * 작성일자: 2024/05/11
+ * 코드 설명 : 기사단 UI의 MVP패턴 중 View에 해당한다. KnightsPresenter에서 필요한 데이터들을 받고, 모든 캐릭터 정보를 나타내준다
+ *             또한 캐릭터를 등급,레벨에 따라 정렬할 수 있고, 직업 및 캐릭터 속성에 따라 필터링 할 수 있다.
+ * 
+ *
+ * email : eofud0930@naver.com
+ * phone : 010-9889-1281
+ *
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

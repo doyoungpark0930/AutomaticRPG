@@ -1,3 +1,15 @@
+/*
+ * CharacterInfoView.cs
+ * 작성자 :박도영
+ * 작성일자: 2024/05/11
+ * 코드 설명 : 캐릭터 정보UI의 MVP패턴 중 View에 해당한다. CharacterInfoPresenter에 필요한 데이터들을 받고, 캐릭터 정보를 나타내준다
+ *             캐릭터 정보 및 스텟을 나타내고, 레벨업 기능 및 장비UI(EquipmentView)로 넘어가는 기능이 있다
+ * 
+ *
+ * email : eofud0930@naver.com
+ * phone : 010-9889-1281
+ *
+ */
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;

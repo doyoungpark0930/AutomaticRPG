@@ -1,3 +1,13 @@
+/*
+ * DataModel.cs
+ * 작성자 :박도영
+ * 작성일자: 2024/05/11
+ * 코드 설명 : 게임 데이터를 로드 및 저장, 참조 관계를 연결하는 코드이다. 이 모델은 MVP방식 중 Presenter에서만 사용된다
+ *
+ * email : eofud0930@naver.com
+ * phone : 010-9889-1281
+ *
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

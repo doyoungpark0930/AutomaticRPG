@@ -1,3 +1,15 @@
+/*
+ * CharacterInfoPresenter.cs
+ * 작성자 :박도영
+ * 작성일자: 2024/05/11
+ * 코드 설명 : 캐릭터 정보UI의 MVP패턴 중 Presenter에 해당한다. CharacterInfoVIew에 필요한 데이터들을 DataModel에서 읽고 정제하여 전달해준다
+ *             CharacterInfoUI 네임스페이스를 활용하여 데이터를 캐릭터 정보 UI에서만 사용할 수 있게 모듈화하였다.
+ * 
+ *
+ * email : eofud0930@naver.com
+ * phone : 010-9889-1281
+ *
+ */
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +17,7 @@ using UnityEngine;
 
 namespace CharacterInfoUI
 {
-    public class InfoData //나중에 이름 바꿔야함
+    public class InfoData 
     {
         public Sprite WeaponSprite;
         public Sprite ArmorSprite;
